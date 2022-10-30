@@ -11,6 +11,7 @@ public class pickHandler : MonoBehaviour
     private bool hasAlphabet;
     public movementAnimationController animHandler;
     public thirdPersonMovement movementHandler;
+    public Color pickColor;
 
     private void OnTriggerStay(Collider other)
     {
@@ -25,6 +26,7 @@ public class pickHandler : MonoBehaviour
                 if (tempTime >= 2)
                 {
                     other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
+                    other.GetComponent<materialChanger>().changeColor(pickColor);
                     other.tag = "Untagged";
                     other.transform.localScale = new Vector3(80, 80, 80);                    
                     hasAlphabet = true;
