@@ -1832,11 +1832,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 774467405}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1852576805445164102}
-  m_RootOrder: 4
+  m_Father: {fileID: 904465783}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &788117045
 PrefabInstance:
@@ -2317,6 +2317,7 @@ Transform:
   m_Children:
   - {fileID: 543450652386870373}
   - {fileID: 246230795}
+  - {fileID: 774467406}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2399,6 +2400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fillImage: {fileID: 578107955}
+  pickpoint: {fileID: 774467406}
+  animHandler: {fileID: 904465787}
+  movementHandler: {fileID: 904465784}
 --- !u!1001 &916569827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5723,7 +5727,6 @@ Transform:
   - {fileID: 3667946888529916005}
   - {fileID: 9118793901111182466}
   - {fileID: 8447082968108382064}
-  - {fileID: 774467406}
   m_Father: {fileID: 2563496968796263974}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -5,7 +5,8 @@ using UnityEngine;
 public class thirdPersonMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController controller;
-    [SerializeField] private float speed, rotationSpeed;
+    public float speed;
+    [SerializeField] private float rotationSpeed;
     private float gravity = -1f;
     private Vector3 direction;
 
