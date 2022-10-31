@@ -63,6 +63,7 @@ public class pickHandler : MonoBehaviour
                     other.tag = "Untagged";
                     other.transform.localScale = new Vector3(80, 80, 80);                    
                     hasAlphabet = true;
+                    other.GetComponent<alphabet>().picked = true;
                     StartCoroutine(wait());
                     tempTime = 0;
                     fillImage.transform.parent.gameObject.SetActive(false);
@@ -126,6 +127,7 @@ public class pickHandler : MonoBehaviour
 
     private IEnumerator placementWait()
     {
+        pickedAlphabet.GetComponent<alphabet>().picked = false;
         animHandler.anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(waitRepick());
@@ -153,6 +155,7 @@ public class pickHandler : MonoBehaviour
             movementHandler.speed = 10;
             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
             pickedAlphabet.transform.tag = "Pickable";
+            pickedAlphabet.GetComponent<alphabet>().picked = false;
             pickedAlphabet = null;
             pickButton.SetActive(false);
             hasAlphabet = false;

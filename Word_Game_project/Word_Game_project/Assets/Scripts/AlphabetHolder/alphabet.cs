@@ -5,4 +5,5 @@ using UnityEngine;
 public class alphabet : MonoBehaviour
 {
     public string letter;
+    public bool picked;
 }
