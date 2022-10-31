@@ -23,6 +23,8 @@ public class pickHandler : MonoBehaviour
         if (other.tag == "Pickable" && !hasAlphabet)
         {
             tempTime = 0;
+            other.GetComponent<curveFollower>().targetNull();
+            other.GetComponent<curveFollower>().enabled = true;
         }
 
         if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter)
@@ -48,6 +50,8 @@ public class pickHandler : MonoBehaviour
                 if (tempTime >= 2)
                 {
                     pickedAlphabet = other.gameObject;
+                    pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
+                    pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                     other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
                     other.GetComponent<materialChanger>().changeColor(pickColor);
                     other.tag = "Untagged";
@@ -72,13 +76,12 @@ public class pickHandler : MonoBehaviour
                 if (tempTime <= 0)
                 {
                     hasAlphabet = false;
-                    pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.localPosition);                    
-                    pickedAlphabet.GetComponent<materialChanger>().changeColor(Color.yellow);
+                    pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.localPosition);                                        
                     pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
                     hasAlphabet = false;
                     StartCoroutine(wait());
                     StartCoroutine(placementWait());
-                    tempTime = 2;
+                    tempTime = 0;
                     fillImage.transform.parent.gameObject.SetActive(false);
                     fillImage.fillAmount = 0;
                     PlacementPos = null;
@@ -100,7 +103,7 @@ public class pickHandler : MonoBehaviour
         if (other.tag == "Holder" && hasAlphabet)
         {
             PlacementPos = null;
-            tempTime = 2;
+            tempTime = 0;
             fillImage.transform.parent.gameObject.SetActive(false);
             fillImage.fillAmount = 1;
         }
@@ -119,10 +122,16 @@ public class pickHandler : MonoBehaviour
     {
         animHandler.anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
-        //pickedAlphabet.tag = "Pickable"; 
+        StartCoroutine(waitRepick());
         movementHandler.speed = 10;
         pickButton.SetActive(false);
         animHandler.anim.SetBool("Picked", false);
+    }
+
+    private IEnumerator waitRepick()
+    {
+        yield return new WaitForSeconds(0.5f);
+        pickedAlphabet.tag = "Pickable"; 
     }
 
 
