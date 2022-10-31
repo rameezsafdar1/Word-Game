@@ -372,6 +372,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: -6193319858959445160, guid: fc93966cbd943db4d9ca7e7b883f346f, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2348950666722269604, guid: fc93966cbd943db4d9ca7e7b883f346f, type: 3}
       propertyPath: col.a
       value: 1
@@ -3834,6 +3838,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 2695245092881698575, guid: 537c3606c15e6094c90f280f92d95f5e, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8249611515104702747, guid: 537c3606c15e6094c90f280f92d95f5e, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -5542,6 +5550,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7230485213019274163, guid: c3720cdfa9bc7f242871240e94248603, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3720cdfa9bc7f242871240e94248603, type: 3}
 --- !u!4 &916569828 stripped
@@ -5774,6 +5786,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 3804285962509093551, guid: 69869cb2e020b98428b256f1cd67d08c, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5860805953630706181, guid: 69869cb2e020b98428b256f1cd67d08c, type: 3}
       propertyPath: m_Name
       value: L (3)
@@ -5994,6 +6010,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 2706240112552350435, guid: 16dd17ca8b5fa5b4898bf2c36accac24, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7362275335506165652, guid: 16dd17ca8b5fa5b4898bf2c36accac24, type: 3}
       propertyPath: m_Name
       value: A (2)
@@ -6215,7 +6235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1021934644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6301,6 +6321,7 @@ MonoBehaviour:
   - {fileID: 2016255246}
   - {fileID: 1257385934}
   dropDestinations: []
+  currentDestination: {fileID: 0}
   isFollowing: 0
 --- !u!195 &1021934648
 NavMeshAgent:
@@ -6905,6 +6926,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: -6193319858959445160, guid: 7e8dcbeb9851c424b870e8d23b293acb, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2800417902075606763, guid: 7e8dcbeb9851c424b870e8d23b293acb, type: 3}
       propertyPath: m_Name
       value: Y (1)
@@ -8122,6 +8147,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 2695245092881698575, guid: 537c3606c15e6094c90f280f92d95f5e, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8249611515104702747, guid: 537c3606c15e6094c90f280f92d95f5e, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -8270,6 +8299,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 2706240112552350435, guid: 16dd17ca8b5fa5b4898bf2c36accac24, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7362275335506165652, guid: 16dd17ca8b5fa5b4898bf2c36accac24, type: 3}
       propertyPath: m_Name
       value: A (3)
@@ -8830,6 +8863,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 3804285962509093551, guid: 69869cb2e020b98428b256f1cd67d08c, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5860805953630706181, guid: 69869cb2e020b98428b256f1cd67d08c, type: 3}
       propertyPath: m_Name
       value: L (2)
@@ -10085,6 +10122,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7230485213019274163, guid: c3720cdfa9bc7f242871240e94248603, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3720cdfa9bc7f242871240e94248603, type: 3}
 --- !u!4 &2016255246 stripped
@@ -10763,6 +10804,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7230485213019274163, guid: c3720cdfa9bc7f242871240e94248603, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3720cdfa9bc7f242871240e94248603, type: 3}
 --- !u!1 &1914334643005454957
@@ -11003,6 +11048,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: -6193319858959445160, guid: fc93966cbd943db4d9ca7e7b883f346f, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2800417902075606763, guid: fc93966cbd943db4d9ca7e7b883f346f, type: 3}
       propertyPath: m_Name
       value: T (1)
@@ -11916,6 +11965,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 3804285962509093551, guid: 69869cb2e020b98428b256f1cd67d08c, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5860805953630706181, guid: 69869cb2e020b98428b256f1cd67d08c, type: 3}
       propertyPath: m_Name
       value: L (1)
@@ -12166,6 +12219,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 2706240112552350435, guid: 16dd17ca8b5fa5b4898bf2c36accac24, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7362275335506165652, guid: 16dd17ca8b5fa5b4898bf2c36accac24, type: 3}
       propertyPath: m_Name
       value: A (1)
@@ -12472,6 +12529,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474226747}
     m_Modifications:
+    - target: {fileID: 2695245092881698575, guid: 537c3606c15e6094c90f280f92d95f5e, type: 3}
+      propertyPath: picked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8249611515104702747, guid: 537c3606c15e6094c90f280f92d95f5e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -12928,6 +12989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickDestinations: []
   dropDestinations: []
+  currentDestination: {fileID: 0}
   isFollowing: 0
 --- !u!114 &8755094320742223915
 MonoBehaviour:
