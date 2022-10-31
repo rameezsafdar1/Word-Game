@@ -27,7 +27,7 @@ public class pickHandler : MonoBehaviour
             other.GetComponent<curveFollower>().enabled = true;
         }
 
-        if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter)
+        if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
         {
             tempTime = 2;
             PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
@@ -43,6 +43,12 @@ public class pickHandler : MonoBehaviour
         {
             if (other.tag == "Pickable")
             {
+
+                if (!other.GetComponent<curveFollower>().enabled)
+                {
+                    other.GetComponent<curveFollower>().enabled = true;
+                }
+
                 tempTime += Time.deltaTime;
                 fillImage.transform.parent.gameObject.SetActive(true);
                 fillImage.fillAmount = tempTime / 2;
@@ -130,7 +136,7 @@ public class pickHandler : MonoBehaviour
 
     private IEnumerator waitRepick()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         pickedAlphabet.tag = "Pickable"; 
     }
 
