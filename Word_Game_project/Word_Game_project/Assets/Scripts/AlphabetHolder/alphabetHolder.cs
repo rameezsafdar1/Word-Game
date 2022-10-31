@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class alphabetHolder : MonoBehaviour
 {
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-
-        }
-    }
+    public int actor;
+    public string Alphabet;
+    public Transform placementPoint;
 }

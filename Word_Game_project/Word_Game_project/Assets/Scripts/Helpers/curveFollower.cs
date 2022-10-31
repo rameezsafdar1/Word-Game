@@ -28,7 +28,7 @@ public class curveFollower : MonoBehaviour
 
             if (timer >= timeToReach)
             {
-                transform.localRotation = Quaternion.identity;
+                transform.localRotation = finalRot;
                 transform.localPosition = target;
                 if (onReached != null)
                 {
@@ -43,9 +43,15 @@ public class curveFollower : MonoBehaviour
 
     public void setMyTarget(Transform parent, Vector3 t)
     {
+        timer = 0;
+        speed = 0;
         transform.parent = parent;
         startPos = transform.localPosition;
         target = t;
     }
 
+    public void targetNull()
+    {
+        target = Vector3.zero;
+    }
 }
