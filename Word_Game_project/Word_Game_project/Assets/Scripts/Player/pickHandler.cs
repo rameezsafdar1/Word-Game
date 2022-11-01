@@ -29,7 +29,7 @@ public class pickHandler : MonoBehaviour
 
         if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
         {
-            tempTime = 2;
+            tempTime = 4;
             PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
             pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(90, 0, 0);
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
@@ -78,7 +78,7 @@ public class pickHandler : MonoBehaviour
             {
                 tempTime -= Time.deltaTime;
                 fillImage.transform.parent.gameObject.SetActive(true);
-                fillImage.fillAmount = tempTime / 2;
+                fillImage.fillAmount = tempTime / 4;
 
                 if (tempTime <= 0)
                 {
@@ -107,7 +107,7 @@ public class pickHandler : MonoBehaviour
             fillImage.fillAmount = 0;
         }
 
-        if (other.tag == "Holder" && hasAlphabet)
+        if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
         {
             PlacementPos = null;
             tempTime = 0;
@@ -128,6 +128,7 @@ public class pickHandler : MonoBehaviour
     private IEnumerator placementWait()
     {
         pickedAlphabet.GetComponent<alphabet>().picked = false;
+        pickedAlphabet.GetComponent<alphabet>().placed = true;
         animHandler.anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(waitRepick());
@@ -159,6 +160,7 @@ public class pickHandler : MonoBehaviour
             pickedAlphabet = null;
             pickButton.SetActive(false);
             hasAlphabet = false;
+            fillImage.transform.parent.gameObject.SetActive(false);
         }
     }
 

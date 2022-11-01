@@ -6,4 +6,41 @@ public class alphabet : MonoBehaviour
 {
     public string letter;
     public bool picked;
+    private float tempTime;
+    private Vector3 startPos;
+    private Quaternion startrot;
+    [HideInInspector]
+    public bool placed;
+
+    private void Start()
+    {
+        startPos = transform.position;
+        startrot = transform.rotation;
+    }
+
+    private void Update()
+    {
+
+        if (picked) 
+        {
+            placed = false;
+            tempTime = 0;
+        }
+
+        if (!picked && !placed && tag == "Pickable")
+        {
+            tempTime += Time.deltaTime;
+
+            if (tempTime >= 2)
+            {
+                if (transform.position != startPos)
+                {
+                    transform.position = startPos;
+                    transform.rotation = startrot;
+                }
+                tempTime = 0;
+            }
+        }
+    }
+
 }
