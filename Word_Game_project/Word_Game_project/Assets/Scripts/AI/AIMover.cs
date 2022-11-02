@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class AIMover : MonoBehaviour
+public class AIMover : MonoBehaviour, iDamagable
 {
     public int actor;
     private NavMeshAgent Agent;
@@ -21,6 +21,8 @@ public class AIMover : MonoBehaviour
     public Color pickColor;
     private int currentDrop;
     private Transform PlacementPos;
+    private bool isStunned;
+    private Quaternion lastrot;
 
     private void Start()
     {
@@ -31,7 +33,7 @@ public class AIMover : MonoBehaviour
     {
         anim.SetFloat("Velocity", Agent.velocity.magnitude);
 
-        if (currentDrop < dropDestinations.Count)
+        if (currentDrop < dropDestinations.Count && !isStunned)
         {
             if (!hasAlphabet)
             {
@@ -69,101 +71,113 @@ public class AIMover : MonoBehaviour
                 }
             }
         }
+
+        if (isStunned)
+        {
+            transform.rotation = lastrot;
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Pickable" && !hasAlphabet)
+        if (!isStunned)
         {
-            tempTime = 0;
-            other.GetComponent<curveFollower>().targetNull();
-            other.GetComponent<curveFollower>().enabled = true;
-        }
+            if (other.tag == "Pickable" && !hasAlphabet)
+            {
+                tempTime = 0;
+                other.GetComponent<curveFollower>().targetNull();
+                other.GetComponent<curveFollower>().enabled = true;
+            }
 
-        if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
-        {
-            tempTime = 4;
-            PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
-            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(-90, -180, 0);
-            pickedAlphabet.GetComponent<curveFollower>().targetNull();
-            pickedAlphabet.GetComponent<curveFollower>().enabled = true;
+            if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
+            {
+                tempTime = 4;
+                PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
+                pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(-90, -180, 0);
+                pickedAlphabet.GetComponent<curveFollower>().targetNull();
+                pickedAlphabet.GetComponent<curveFollower>().enabled = true;
+            }
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (!hasAlphabet)
+        if (!isStunned)
         {
-            if (currentDestination == other.transform)
+            if (!hasAlphabet)
             {
-                if (other.tag == "Pickable")
+                if (currentDestination == other.transform)
                 {
-
-                    if (!other.GetComponent<curveFollower>().enabled)
+                    if (other.tag == "Pickable")
                     {
-                        other.GetComponent<curveFollower>().enabled = true;
-                    }
 
-                    tempTime += Time.deltaTime;
-                    fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = tempTime / 2;
+                        if (!other.GetComponent<curveFollower>().enabled)
+                        {
+                            other.GetComponent<curveFollower>().enabled = true;
+                        }
 
-                    if (tempTime >= 2)
-                    {
-                        pickedAlphabet = other.gameObject;
-                        pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
-                        pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
-                        other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-                        other.GetComponent<materialChanger>().changeColor(pickColor);
-                        other.tag = "Picked";
-                        other.transform.localScale = new Vector3(80, 80, 80);
-                        hasAlphabet = true;
-                        isFollowing = false;
-                        other.GetComponent<alphabet>().picked = true;
-                        StartCoroutine(wait());
-                        tempTime = 0;
-                        fillImage.transform.parent.gameObject.SetActive(false);
-                        fillImage.fillAmount = 0;
+                        tempTime += Time.deltaTime;
+                        fillImage.transform.parent.gameObject.SetActive(true);
+                        fillImage.fillAmount = tempTime / 2;
+
+                        if (tempTime >= 2)
+                        {
+                            pickedAlphabet = other.gameObject;
+                            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
+                            pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
+                            other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
+                            other.GetComponent<materialChanger>().changeColor(pickColor);
+                            other.tag = "Picked";
+                            other.transform.localScale = new Vector3(80, 80, 80);
+                            hasAlphabet = true;
+                            isFollowing = false;
+                            other.GetComponent<alphabet>().picked = true;
+                            StartCoroutine(wait());
+                            tempTime = 0;
+                            fillImage.transform.parent.gameObject.SetActive(false);
+                            fillImage.fillAmount = 0;
+                        }
                     }
                 }
             }
-        }
 
-        else
-        {
-            if (currentDestination == other.transform)
+            else
             {
-                if (other.tag == "Holder" && PlacementPos != null && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
+                if (currentDestination == other.transform)
                 {
-                    tempTime -= Time.deltaTime;
-                    fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = tempTime / 4;
-
-                    if (tempTime <= 0)
+                    if (other.tag == "Holder" && PlacementPos != null && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
                     {
-                        hasAlphabet = false;
-                        pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.localPosition);
+                        tempTime -= Time.deltaTime;
+                        fillImage.transform.parent.gameObject.SetActive(true);
+                        fillImage.fillAmount = tempTime / 4;
 
-                        Agent.ResetPath();
-                        Agent.isStopped = true;
-                        Agent.velocity = Vector3.zero;
+                        if (tempTime <= 0)
+                        {
+                            hasAlphabet = false;
+                            pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.localPosition);
 
-                        pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
-                        currentDestination = null;
-                        hasAlphabet = false;
-                        StartCoroutine(wait());
-                        StartCoroutine(placementWait());
-                        tempTime = 0;
-                        fillImage.transform.parent.gameObject.SetActive(false);
-                        fillImage.fillAmount = 0;
-                        currentDrop++;
-                        isFollowing = false;
+                            Agent.ResetPath();
+                            Agent.isStopped = true;
+                            Agent.velocity = Vector3.zero;
+
+                            pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
+                            currentDestination = null;
+                            hasAlphabet = false;
+                            StartCoroutine(wait());
+                            StartCoroutine(placementWait());
+                            tempTime = 0;
+                            fillImage.transform.parent.gameObject.SetActive(false);
+                            fillImage.fillAmount = 0;
+                            currentDrop++;
+                            isFollowing = false;
+                        }
                     }
-                }
 
-                if (other.tag == "Holder" && other.GetComponent<alphabetHolder>().Alphabet != pickedAlphabet.GetComponent<alphabet>().letter)
-                {
-                    dropAlphabet();
+                    if (other.tag == "Holder" && other.GetComponent<alphabetHolder>().Alphabet != pickedAlphabet.GetComponent<alphabet>().letter)
+                    {
+                        dropAlphabet();
+                    }
                 }
             }
         }
@@ -172,21 +186,23 @@ public class AIMover : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Pickable" || other.tag == "Picked")
+        if (!isStunned)
         {
-            tempTime = 0;
-            fillImage.transform.parent.gameObject.SetActive(false);
-            fillImage.fillAmount = 0;
-        }
+            if (other.tag == "Pickable" || other.tag == "Picked")
+            {
+                tempTime = 0;
+                fillImage.transform.parent.gameObject.SetActive(false);
+                fillImage.fillAmount = 0;
+            }
 
-        if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
-        {
-            PlacementPos = null;
-            tempTime = 0;
-            fillImage.transform.parent.gameObject.SetActive(false);
-            fillImage.fillAmount = 1;
+            if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
+            {
+                PlacementPos = null;
+                tempTime = 0;
+                fillImage.transform.parent.gameObject.SetActive(false);
+                fillImage.fillAmount = 1;
+            }
         }
-
     }
 
     private IEnumerator wait()
@@ -237,6 +253,34 @@ public class AIMover : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         obj.transform.tag = "Pickable";
+    }
+
+    public void takeDamage()
+    {
+        isStunned = true;
+        dropAlphabet();
+        StartCoroutine(stunMe());
+        Agent.ResetPath();
+        Agent.velocity = Vector3.zero;
+        isFollowing = false;
+        Agent.speed = 20;
+        lastrot = Agent.transform.rotation;
+        Vector3 newdir = Agent.transform.position - new Vector3(0, 0, 5);
+        newdir = Agent.transform.TransformDirection(newdir);
+        Agent.SetDestination(newdir);
+        fillImage.transform.parent.gameObject.SetActive(false);
+
+    }
+
+    private IEnumerator stunMe()
+    {
+        anim.applyRootMotion = true;   
+        anim.SetBool("Stun", true);
+        yield return new WaitForSeconds(5f);
+        isStunned = false;
+        anim.SetBool("Stun", false);
+        anim.applyRootMotion = false;
+        Agent.speed = 15;
     }
 
 }

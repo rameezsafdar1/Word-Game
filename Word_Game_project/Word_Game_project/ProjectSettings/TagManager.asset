@@ -9,6 +9,8 @@ TagManager:
   - EnemyDrop
   - Picked
   - Weapon
+  - Damager
+  - AI
   layers:
   - Default
   - TransparentFX

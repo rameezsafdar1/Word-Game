@@ -7,6 +7,7 @@ public class combatController : MonoBehaviour
     public fieldOfView fov;
     public Animator anim;
     public pickHandler playerHandler;
+    public GameObject baseWeapon;
 
     private void Update()
     {
@@ -19,5 +20,13 @@ public class combatController : MonoBehaviour
         }
     }
 
+    public void makeAttackable()
+    {
+        baseWeapon.SetActive(true);
+    }
 
+    public void makeNeutral()
+    {
+        baseWeapon.SetActive(false);
+    }
 }

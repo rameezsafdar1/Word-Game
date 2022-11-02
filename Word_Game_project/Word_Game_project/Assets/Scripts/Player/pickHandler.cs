@@ -16,13 +16,20 @@ public class pickHandler : MonoBehaviour
     private GameObject pickedAlphabet;
     public GameObject pickButton;
     private Transform PlacementPos;
-    public Transform weaponParent;
+    public Transform weaponParent, weaponBackParent;
     public GameObject weaponObtained;
+    public colorLerp pulse;
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.tag == "Pickable" && !hasAlphabet)
+        {
+            tempTime = 0;
+            other.GetComponent<curveFollower>().targetNull();
+            other.GetComponent<curveFollower>().enabled = true;
+        }
+
+        if (other.tag == "EnemyDrop" && !hasAlphabet)
         {
             tempTime = 0;
             other.GetComponent<curveFollower>().targetNull();
@@ -45,8 +52,9 @@ public class pickHandler : MonoBehaviour
             other.transform.parent = weaponParent;
             weaponObtained.transform.localRotation = Quaternion.identity;
             weaponObtained.transform.localPosition = Vector3.zero;
+            weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+            weaponObtained.tag = "Untagged";
         }
-
     }
 
     private void OnTriggerStay(Collider other)
@@ -80,8 +88,62 @@ public class pickHandler : MonoBehaviour
                     tempTime = 0;
                     fillImage.transform.parent.gameObject.SetActive(false);
                     fillImage.fillAmount = 0;
+
+                    if (weaponObtained != null)
+                    {
+                        weaponObtained.transform.parent = weaponBackParent;
+                        weaponObtained.transform.localRotation = Quaternion.identity;
+                        weaponObtained.transform.localPosition = Vector3.zero;
+                        weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                    }
+
                 }
             }
+
+            else if (other.tag == "EnemyDrop")
+            {
+                pulse.col = pickColor;
+                pulse.enabled = true;
+
+                if (!other.GetComponent<curveFollower>().enabled)
+                {
+                    other.GetComponent<curveFollower>().enabled = true;
+                }
+
+                
+                tempTime += Time.deltaTime;
+                fillImage.transform.parent.gameObject.SetActive(true);
+                fillImage.fillAmount = tempTime / 8;
+
+                if (tempTime >= 8)
+                {
+                    pulse.mat.color = Color.white;
+                    pulse.enabled = false;
+                    pickedAlphabet = other.gameObject;
+                    pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
+                    pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
+                    other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
+                    other.GetComponent<materialChanger>().changeColor(pickColor);
+                    other.tag = "Picked";
+                    other.transform.localScale = new Vector3(80, 80, 80);
+                    hasAlphabet = true;
+                    other.GetComponent<alphabet>().picked = true;
+                    StartCoroutine(wait());
+                    tempTime = 0;
+                    fillImage.transform.parent.gameObject.SetActive(false);
+                    fillImage.fillAmount = 0;
+
+                    if (weaponObtained != null)
+                    {
+                        weaponObtained.transform.parent = weaponBackParent;
+                        weaponObtained.transform.localRotation = Quaternion.identity;
+                        weaponObtained.transform.localPosition = Vector3.zero;
+                        weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                    }
+
+                }
+            }
+
         }
 
         else
@@ -95,6 +157,17 @@ public class pickHandler : MonoBehaviour
                 if (tempTime <= 0)
                 {
                     hasAlphabet = false;
+
+                    if (weaponObtained != null)
+                    {
+                        weaponObtained.transform.parent = weaponParent;
+                        weaponObtained.transform.localRotation = Quaternion.identity;
+                        weaponObtained.transform.localPosition = Vector3.zero;
+                        weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                        weaponObtained.tag = "Untagged";
+                    }
+
+
                     pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.localPosition);                                        
                     pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
                     hasAlphabet = false;
@@ -143,6 +216,9 @@ public class pickHandler : MonoBehaviour
         pickedAlphabet.GetComponent<alphabet>().placed = true;
         animHandler.anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
+        pickedAlphabet.GetComponent<dropEffect>().dropped();
+        CinemachineShake.Instance.ShakeCamera(2, 0.3f);
+        Vibration.Vibrate(8);
         StartCoroutine(waitRepick());
         movementHandler.speed = 10;
         pickButton.SetActive(false);
