@@ -11,6 +11,7 @@ public class alphabet : MonoBehaviour
     private Quaternion startrot;
     [HideInInspector]
     public bool placed;
+    public AIMover ai;
 
     private void Start()
     {
@@ -31,7 +32,7 @@ public class alphabet : MonoBehaviour
         {
             tempTime += Time.deltaTime;
 
-            if (tempTime >= 2)
+            if (tempTime >= 15)
             {
                 if (transform.position != startPos)
                 {

@@ -5,11 +5,11 @@ using UnityEngine;
 public class colorLerp : MonoBehaviour
 {
     public Material mat;
-    public Color col;
+    public Color col, darkcol;
 
     private void Update()
     {
-        mat.color = Color.Lerp(Color.white, col, Mathf.PingPong(Time.time, 1));
+        mat.color = Color.Lerp(col, darkcol, Mathf.PingPong(Time.time, 1));
     }
 
 

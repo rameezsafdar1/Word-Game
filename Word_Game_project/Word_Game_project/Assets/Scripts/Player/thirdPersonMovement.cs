@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class thirdPersonMovement : MonoBehaviour
+public class thirdPersonMovement : MonoBehaviour, iDamagable
 {
     [SerializeField] private CharacterController controller;
     public float speed;
     [SerializeField] private float rotationSpeed;
     private float gravity = -1f;
     private Vector3 direction;
+    public bool isStunned;
+    public pickHandler pick;
 
 
     private void Update()
     {
-        movement();
+        if (!isStunned)
+        {
+            movement();
+        }
     }
 
     private void movement()
@@ -51,6 +56,26 @@ public class thirdPersonMovement : MonoBehaviour
         }
         direction = new Vector3(direction.x, gravity, direction.z);
         controller.Move(direction * speed * Time.deltaTime);
+    }
+
+    public void takeDamage()
+    {
+        isStunned = true;
+        pick.dropAlphabet();
+        pick.tempTime = 0;
+        pick.pulse.enabled = false;
+        pick.pulse.mat.color = Color.white;
+        StartCoroutine(stunMe());        
+        pick.fillImage.transform.parent.gameObject.SetActive(false);
+
+    }
+
+    private IEnumerator stunMe()
+    {
+        pick.animHandler.anim.SetBool("Stun", true);
+        yield return new WaitForSeconds(5f);
+        isStunned = false;
+        pick.animHandler.anim.SetBool("Stun", false);
     }
 
 }

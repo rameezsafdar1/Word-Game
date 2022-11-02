@@ -6,23 +6,26 @@ using UnityEngine.UI;
 
 public class AIMover : MonoBehaviour, iDamagable
 {
+    public Transform Player;
     public int actor;
     private NavMeshAgent Agent;
     public List<Transform> pickDestinations = new List<Transform>();
     public List<Transform> dropDestinations = new List<Transform>();
     [SerializeField] private Transform currentDestination;
     [SerializeField] private bool isFollowing;
-    [SerializeField] private bool hasAlphabet;
+    public bool hasAlphabet;
     public Animator anim;
     private float tempTime;
     public Image fillImage;
     private GameObject pickedAlphabet;
     public Transform pickpoint;
     public Color pickColor;
-    private int currentDrop;
+    [HideInInspector]
+    public int currentDrop;
     private Transform PlacementPos;
-    private bool isStunned;
+    public bool isStunned;
     private Quaternion lastrot;
+    public bool isAggressive;
 
     private void Start()
     {
@@ -33,7 +36,7 @@ public class AIMover : MonoBehaviour, iDamagable
     {
         anim.SetFloat("Velocity", Agent.velocity.magnitude);
 
-        if (currentDrop < dropDestinations.Count && !isStunned)
+        if (currentDrop < dropDestinations.Count && !isStunned && !isAggressive)
         {
             if (!hasAlphabet)
             {
@@ -45,16 +48,23 @@ public class AIMover : MonoBehaviour, iDamagable
                         Agent.isStopped = false;
                         isFollowing = true;
                         currentDestination = pickDestinations[x];
-                        Agent.SetDestination(currentDestination.localPosition);
+                        Agent.SetDestination(currentDestination.position);
                     }
                 }
                 else
                 {
-                    if (currentDestination.GetComponent<alphabet>().picked || currentDestination.GetComponent<alphabet>().placed)
+                    if (currentDestination.GetComponent<alphabet>() != null)
                     {
-                        Agent.ResetPath();
-                        Agent.isStopped = true;
-                        Agent.velocity = Vector3.zero;
+                        if (currentDestination != null && currentDestination.GetComponent<alphabet>().picked || currentDestination.GetComponent<alphabet>().placed)
+                        {
+                            Agent.ResetPath();
+                            Agent.isStopped = true;
+                            Agent.velocity = Vector3.zero;
+                            isFollowing = false;
+                        }
+                    }
+                    else
+                    {
                         isFollowing = false;
                     }
                 }
@@ -66,7 +76,7 @@ public class AIMover : MonoBehaviour, iDamagable
                 {
                     Agent.isStopped = false;
                     currentDestination = dropDestinations[currentDrop];
-                    Agent.SetDestination(currentDestination.localPosition);
+                    Agent.SetDestination(currentDestination.position);
                     isFollowing = true;
                 }
             }
@@ -165,7 +175,8 @@ public class AIMover : MonoBehaviour, iDamagable
                             currentDestination = null;
                             hasAlphabet = false;
                             StartCoroutine(wait());
-                            StartCoroutine(placementWait());
+                            StartCoroutine(placementWait(pickedAlphabet));
+                            pickedAlphabet = null;
                             tempTime = 0;
                             fillImage.transform.parent.gameObject.SetActive(false);
                             fillImage.fillAmount = 0;
@@ -174,7 +185,7 @@ public class AIMover : MonoBehaviour, iDamagable
                         }
                     }
 
-                    if (other.tag == "Holder" && other.GetComponent<alphabetHolder>().Alphabet != pickedAlphabet.GetComponent<alphabet>().letter)
+                    if (pickedAlphabet != null && other.tag == "Holder" && other.GetComponent<alphabetHolder>().Alphabet != pickedAlphabet.GetComponent<alphabet>().letter)
                     {
                         dropAlphabet();
                     }
@@ -212,21 +223,22 @@ public class AIMover : MonoBehaviour, iDamagable
         Agent.speed = 9;
     }
 
-    private IEnumerator placementWait()
+    private IEnumerator placementWait(GameObject go)
     {
-        pickedAlphabet.GetComponent<alphabet>().picked = false;
-        pickedAlphabet.GetComponent<alphabet>().placed = true;
+        go.GetComponent<alphabet>().picked = false;
+        go.GetComponent<alphabet>().placed = true;
         anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(waitRepick());
+        StartCoroutine(waitRepick(go));
         Agent.speed = 15;
         anim.SetBool("Picked", false);
     }
 
-    private IEnumerator waitRepick()
+    private IEnumerator waitRepick(GameObject go)
     {
         yield return new WaitForSeconds(1f);
-        pickedAlphabet.tag = "EnemyDrop";
+        go.tag = "EnemyDrop";
+        go.GetComponent<alphabet>().ai = this;
     }
 
     public void dropAlphabet()
@@ -257,6 +269,7 @@ public class AIMover : MonoBehaviour, iDamagable
 
     public void takeDamage()
     {
+        gameObject.layer = 0;
         isStunned = true;
         dropAlphabet();
         StartCoroutine(stunMe());
@@ -281,6 +294,34 @@ public class AIMover : MonoBehaviour, iDamagable
         anim.SetBool("Stun", false);
         anim.applyRootMotion = false;
         Agent.speed = 15;
+        gameObject.layer = 6;
+    }
+
+    public void makeMeAggressive()
+    {
+        if (!isStunned)
+        {
+            anim.SetBool("Picked", false);
+            dropAlphabet();
+            isAggressive = true;
+            Agent.SetDestination(Player.position);
+        }
+    }
+
+    public void calmMeDown()
+    {
+        Agent.isStopped = false;
+        isAggressive = false;
+        isFollowing = true;
+        StartCoroutine(waitRetarget());
+    }
+
+    private IEnumerator waitRetarget()
+    {
+        yield return new WaitForSeconds(0.1f);
+        isFollowing = false;
+        yield return new WaitForSeconds(0.2f);
+        isFollowing = true;
     }
 
 }

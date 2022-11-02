@@ -179,7 +179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968782706}
   m_LocalRotation: {x: 0.00000018998972, y: -0.000000019557765, z: 0.37365767, w: 0.92756677}
-  m_LocalPosition: {x: 0.28, y: -1.48, z: -0.54}
+  m_LocalPosition: {x: 0.28, y: -1.48, z: -1.22}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 3464940429200457039}
@@ -2035,10 +2035,12 @@ MonoBehaviour:
   animHandler: {fileID: 7058226367933228754}
   movementHandler: {fileID: 7058226367933228753}
   pickColor: {r: 0.12941176, g: 0.62054133, b: 1, a: 1}
+  darkerPickCol: {r: 0.024430392, g: 0.33470145, b: 0.5754717, a: 1}
   pickButton: {fileID: 0}
   weaponParent: {fileID: 231107421}
   weaponBackParent: {fileID: 968782707}
   weaponObtained: {fileID: 0}
+  pulse: {fileID: 0}
 --- !u!114 &968408788
 MonoBehaviour:
   m_ObjectHideFlags: 0
