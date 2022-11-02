@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b94a90c9516c9cc42bf2d46a3d63a76a, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44945455, g: 0.4995278, b: 0.57568854, a: 1}
+  m_IndirectSpecularColor: {r: 0.6436894, g: 0.79593897, b: 0.96622676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4823,8 +4823,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508902023}
-  m_LocalRotation: {x: 0.44290048, y: 0.000000011067742, z: -0.0000000054673985, w: 0.8965708}
-  m_LocalPosition: {x: -118.8, y: 120.97814, z: -56.79}
+  m_LocalRotation: {x: 0.3155176, y: -0.000000016327478, z: 0.000000005428916, w: 0.9489198}
+  m_LocalPosition: {x: -118.8, y: 113.97814, z: -65.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 828849113}
@@ -6312,7 +6312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 45, z: -23.72}
+  m_FollowOffset: {x: 0, y: 38, z: -32.1}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -6913,8 +6913,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.44290048, y: 0.000000011067742, z: -0.0000000054673985, w: 0.8965708}
-  m_LocalPosition: {x: -118.8, y: 120.97814, z: -56.79}
+  m_LocalRotation: {x: 0.3155176, y: -0.000000016327478, z: 0.000000005428916, w: 0.9489198}
+  m_LocalPosition: {x: -118.8, y: 113.97814, z: -65.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -7275,6 +7275,7 @@ MonoBehaviour:
   hasAlphabet: 0
   anim: {fileID: 1021934645}
   fillImage: {fileID: 1613997507}
+  pickedAlphabet: {fileID: 0}
   pickpoint: {fileID: 217053652}
   pickColor: {r: 0.38431376, g: 0.7843138, b: 0.40000004, a: 1}
   currentDrop: 0
@@ -14338,6 +14339,10 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 968408788}
+    - target: {fileID: 7058226367933228752, guid: 08f204bacf4f0b34ea8136e69b70af85, type: 3}
+      propertyPath: m_Radius
+      value: 0.64
+      objectReference: {fileID: 0}
     - target: {fileID: 7058226367933228753, guid: 08f204bacf4f0b34ea8136e69b70af85, type: 3}
       propertyPath: pick
       value: 
@@ -15155,6 +15160,7 @@ MonoBehaviour:
   hasAlphabet: 0
   anim: {fileID: 8755094320742223917}
   fillImage: {fileID: 8755094320517572452}
+  pickedAlphabet: {fileID: 0}
   pickpoint: {fileID: 8755094320578638361}
   pickColor: {r: 1, g: 0.49411768, b: 0.49803925, a: 1}
   currentDrop: 0

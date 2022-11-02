@@ -53,9 +53,9 @@ public class AIMover : MonoBehaviour, iDamagable
                 }
                 else
                 {
-                    if (currentDestination.GetComponent<alphabet>() != null)
+                    if (currentDestination != null && currentDestination.GetComponent<alphabet>() != null)
                     {
-                        if (currentDestination != null && currentDestination.GetComponent<alphabet>().picked || currentDestination.GetComponent<alphabet>().placed)
+                        if (currentDestination.GetComponent<alphabet>().picked && currentDestination.GetComponent<alphabet>().placed)
                         {
                             Agent.ResetPath();
                             Agent.isStopped = true;
@@ -131,10 +131,10 @@ public class AIMover : MonoBehaviour, iDamagable
                         fillImage.transform.parent.gameObject.SetActive(true);
                         fillImage.fillAmount = tempTime / 2;
 
-                        pickedAlphabet = other.gameObject;
 
                         if (tempTime >= 2)
                         {
+                            pickedAlphabet = other.gameObject;
                             pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
                             pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                             other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
@@ -166,7 +166,7 @@ public class AIMover : MonoBehaviour, iDamagable
                         if (tempTime <= 0)
                         {
                             hasAlphabet = false;
-                            pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.localPosition);
+                            pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
 
                             Agent.ResetPath();
                             Agent.isStopped = true;
@@ -271,7 +271,11 @@ public class AIMover : MonoBehaviour, iDamagable
 
     public void takeDamage()
     {
-        StopAllCoroutines();
+        if (pickedAlphabet != null)
+        {
+            pickedAlphabet.GetComponent<curveFollower>().visual.localPosition = Vector3.zero;
+        }
+
         gameObject.layer = 0;
         isStunned = true;
         dropAlphabet();
@@ -283,9 +287,6 @@ public class AIMover : MonoBehaviour, iDamagable
         isFollowing = false;
         Agent.speed = 20;
         lastrot = Agent.transform.rotation;
-        Vector3 newdir = Agent.transform.position - new Vector3(0, 0, 5);
-        newdir = Agent.transform.TransformDirection(newdir);
-        Agent.SetDestination(newdir);
         fillImage.transform.parent.gameObject.SetActive(false);
 
     }
