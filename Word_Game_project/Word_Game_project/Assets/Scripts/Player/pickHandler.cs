@@ -31,7 +31,7 @@ public class pickHandler : MonoBehaviour
         {
             tempTime = 4;
             PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
-            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(90, 0, 0);
+            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(-90, -180, 0);
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
             pickedAlphabet.GetComponent<curveFollower>().enabled = true;
         }
@@ -60,7 +60,7 @@ public class pickHandler : MonoBehaviour
                     pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                     other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
                     other.GetComponent<materialChanger>().changeColor(pickColor);
-                    other.tag = "Untagged";
+                    other.tag = "Picked";
                     other.transform.localScale = new Vector3(80, 80, 80);                    
                     hasAlphabet = true;
                     other.GetComponent<alphabet>().picked = true;
@@ -100,7 +100,7 @@ public class pickHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Pickable")
+        if (other.tag == "Pickable" || other.tag == "Picked")
         {
             tempTime = 0;
             fillImage.transform.parent.gameObject.SetActive(false);

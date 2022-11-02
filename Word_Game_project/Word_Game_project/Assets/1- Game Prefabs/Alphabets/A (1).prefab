@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7487227626304921678}
   - component: {fileID: 3084842954434732674}
   - component: {fileID: 9080381263686501944}
+  - component: {fileID: 4237413505370181037}
   m_Layer: 0
   m_Name: visual
   m_TagString: Untagged
@@ -81,6 +82,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4237413505370181037
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7283639767425068767}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1534361974863734127, guid: 6c91cb393f21ace478533fb581f94515, type: 3}
 --- !u!1 &7362275335506165652
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +195,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.08792976, y: 0.09833091, z: 0.02091985}
+  m_Size: {x: 0.1, y: 0.09833091, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6686109790010966805
 Rigidbody:
@@ -267,6 +282,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   letter: A
+  picked: 0
+  placed: 0
 --- !u!95 &-6611739361231582838
 Animator:
   serializedVersion: 3
