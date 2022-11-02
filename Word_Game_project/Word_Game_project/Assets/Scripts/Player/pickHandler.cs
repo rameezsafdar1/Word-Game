@@ -9,13 +9,15 @@ public class pickHandler : MonoBehaviour
     private float tempTime;
     public Image fillImage;
     public Transform pickpoint;
-    [SerializeField] private bool hasAlphabet;
+    public bool hasAlphabet;
     public movementAnimationController animHandler;
     public thirdPersonMovement movementHandler;
     public Color pickColor;
     private GameObject pickedAlphabet;
     public GameObject pickButton;
     private Transform PlacementPos;
+    public Transform weaponParent;
+    public GameObject weaponObtained;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -35,6 +37,16 @@ public class pickHandler : MonoBehaviour
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
             pickedAlphabet.GetComponent<curveFollower>().enabled = true;
         }
+
+        if (other.tag == "Weapon" && weaponObtained == null)
+        {
+            weaponObtained = other.gameObject;
+            other.GetComponent<Rigidbody>().isKinematic = true;
+            other.transform.parent = weaponParent;
+            weaponObtained.transform.localRotation = Quaternion.identity;
+            weaponObtained.transform.localPosition = Vector3.zero;
+        }
+
     }
 
     private void OnTriggerStay(Collider other)

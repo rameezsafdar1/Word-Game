@@ -6,12 +6,16 @@ public class combatController : MonoBehaviour
 {
     public fieldOfView fov;
     public Animator anim;
+    public pickHandler playerHandler;
 
     private void Update()
     {
-        if (fov.detectedObjects.Count > 0)
+        if (playerHandler != null)
         {
-            anim.SetTrigger("Attack");
+            if (fov.detectedObjects.Count > 0 && !playerHandler.hasAlphabet)
+            {
+                anim.SetTrigger("Attack");
+            }
         }
     }
 

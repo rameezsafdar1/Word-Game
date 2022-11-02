@@ -8,6 +8,7 @@ TagManager:
   - Holder
   - EnemyDrop
   - Picked
+  - Weapon
   layers:
   - Default
   - TransparentFX

@@ -43,7 +43,7 @@ public class AIMover : MonoBehaviour
                         Agent.isStopped = false;
                         isFollowing = true;
                         currentDestination = pickDestinations[x];
-                        Agent.SetDestination(currentDestination.position);
+                        Agent.SetDestination(currentDestination.localPosition);
                     }
                 }
                 else
@@ -64,7 +64,7 @@ public class AIMover : MonoBehaviour
                 {
                     Agent.isStopped = false;
                     currentDestination = dropDestinations[currentDrop];
-                    Agent.SetDestination(currentDestination.position);
+                    Agent.SetDestination(currentDestination.localPosition);
                     isFollowing = true;
                 }
             }
