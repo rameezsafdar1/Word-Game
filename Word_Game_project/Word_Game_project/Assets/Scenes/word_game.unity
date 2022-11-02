@@ -7265,8 +7265,6 @@ MonoBehaviour:
   - {fileID: 1583036571}
   - {fileID: 511733426}
   - {fileID: 1968021039}
-  - {fileID: 807446222}
-  - {fileID: 626359873}
   dropDestinations:
   - {fileID: 1620604894}
   - {fileID: 1344804922}
@@ -15137,18 +15135,16 @@ MonoBehaviour:
   Player: {fileID: 904465783}
   actor: 2
   pickDestinations:
-  - {fileID: 1981551952}
-  - {fileID: 58334074}
-  - {fileID: 1365638067}
-  - {fileID: 1604239521}
   - {fileID: 465052399}
   - {fileID: 1182782288}
   - {fileID: 1966609242}
+  - {fileID: 1604239521}
+  - {fileID: 1981551952}
+  - {fileID: 58334074}
+  - {fileID: 1365638067}
   - {fileID: 1583036571}
   - {fileID: 511733426}
   - {fileID: 1968021039}
-  - {fileID: 807446222}
-  - {fileID: 626359873}
   dropDestinations:
   - {fileID: 757593700}
   - {fileID: 917933736}

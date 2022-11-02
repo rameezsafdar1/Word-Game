@@ -17,10 +17,9 @@ public class AIMover : MonoBehaviour, iDamagable
     public Animator anim;
     private float tempTime;
     public Image fillImage;
-    private GameObject pickedAlphabet;
+    public GameObject pickedAlphabet;
     public Transform pickpoint;
-    public Color pickColor;
-    [HideInInspector]
+    public Color pickColor;    
     public int currentDrop;
     private Transform PlacementPos;
     public bool isStunned;
@@ -40,6 +39,7 @@ public class AIMover : MonoBehaviour, iDamagable
         {
             if (!hasAlphabet)
             {
+                anim.SetBool("Picked", false);
                 if (!isFollowing)
                 {
                     int x = Random.Range(0, pickDestinations.Count);
@@ -131,9 +131,10 @@ public class AIMover : MonoBehaviour, iDamagable
                         fillImage.transform.parent.gameObject.SetActive(true);
                         fillImage.fillAmount = tempTime / 2;
 
+                        pickedAlphabet = other.gameObject;
+
                         if (tempTime >= 2)
                         {
-                            pickedAlphabet = other.gameObject;
                             pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
                             pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                             other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
@@ -245,7 +246,8 @@ public class AIMover : MonoBehaviour, iDamagable
     {
         if (pickedAlphabet != null)
         {
-            isFollowing = false;
+            Debug.Log("had something");
+            isFollowing = false;            
             pickedAlphabet.transform.parent = EffectsManager.Instance.instParent;
             pickedAlphabet.GetComponent<curveFollower>().enabled = true;
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
@@ -269,10 +271,13 @@ public class AIMover : MonoBehaviour, iDamagable
 
     public void takeDamage()
     {
+        StopAllCoroutines();
         gameObject.layer = 0;
         isStunned = true;
         dropAlphabet();
+        
         StartCoroutine(stunMe());
+
         Agent.ResetPath();
         Agent.velocity = Vector3.zero;
         isFollowing = false;
@@ -287,7 +292,8 @@ public class AIMover : MonoBehaviour, iDamagable
 
     private IEnumerator stunMe()
     {
-        anim.applyRootMotion = true;   
+        anim.applyRootMotion = true;
+        anim.SetBool("Picked", false);
         anim.SetBool("Stun", true);
         yield return new WaitForSeconds(5f);
         isStunned = false;

@@ -44,4 +44,10 @@ public class alphabet : MonoBehaviour
         }
     }
 
+    public void forceReset()
+    {
+        transform.position = startPos;
+        transform.rotation = startrot;
+    }
+
 }
