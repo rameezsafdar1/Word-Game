@@ -120,9 +120,9 @@ public class pickHandler : MonoBehaviour
                     other.GetComponent<curveFollower>().enabled = true;
                     tempTime += Time.deltaTime;
                     fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = tempTime / 8;
+                    fillImage.fillAmount = tempTime / 4;
                     other.GetComponent<alphabet>().ai.makeMeAggressive();
-                    if (tempTime >= 8)
+                    if (tempTime >= 4)
                     {
                         pulse.mat.color = Color.white;
                         pulse.enabled = false;
@@ -180,6 +180,7 @@ public class pickHandler : MonoBehaviour
                         pickedAlphabet.layer = 8;
                         pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
                         pickedAlphabet.GetComponent<alphabet>().ai = null;
+                        pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
                         pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
                         pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
                         pickedAlphabet.transform.tag = "PlayerDrop";

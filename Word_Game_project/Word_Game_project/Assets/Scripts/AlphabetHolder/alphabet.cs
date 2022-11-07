@@ -13,6 +13,7 @@ public class alphabet : MonoBehaviour
     public bool placed;
     public AIMover ai;
     public Transform Holder;
+    public Color pickColor;
 
     private void Start()
     {

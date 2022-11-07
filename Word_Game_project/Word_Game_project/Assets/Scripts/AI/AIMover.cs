@@ -189,6 +189,8 @@ public class AIMover : MonoBehaviour, iDamagable
 
                     if (other.tag == "PlayerDrop" || other.tag == "EnemyDrop")
                     {
+                        fillImage.color = other.GetComponent<alphabet>().pickColor;
+
                         if (!other.GetComponent<curveFollower>().enabled)
                         {
                             other.GetComponent<curveFollower>().enabled = true;
@@ -196,10 +198,10 @@ public class AIMover : MonoBehaviour, iDamagable
 
                         tempTime += Time.deltaTime;
                         fillImage.transform.parent.gameObject.SetActive(true);
-                        fillImage.fillAmount = tempTime / 8;
+                        fillImage.fillAmount = tempTime / 4;
 
 
-                        if (tempTime >= 8)
+                        if (tempTime >= 4)
                         {
                             pickedAlphabet = other.gameObject;
                             pickedAlphabet.layer = 0;
@@ -238,17 +240,16 @@ public class AIMover : MonoBehaviour, iDamagable
                         tempTime -= Time.deltaTime;
                         fillImage.transform.parent.gameObject.SetActive(true);
                         fillImage.fillAmount = tempTime / 4;
+                        fillImage.color = pickColor;
 
                         if (tempTime <= 0)
                         {
                             word.Clear();
-                            pulse.mat.color = Color.white;
-                            pulse.enabled = false;
 
                             hasAlphabet = false;
                             pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
                             pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
-
+                            pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
                             Agent.ResetPath();
                             Agent.isStopped = true;
                             Agent.velocity = Vector3.zero;
