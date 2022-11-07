@@ -79,7 +79,6 @@ public class pickHandler : MonoBehaviour
             {
                 if (other.tag == "Pickable")
                 {
-
                     if (!other.GetComponent<curveFollower>().enabled)
                     {
                         other.GetComponent<curveFollower>().enabled = true;
@@ -129,8 +128,10 @@ public class pickHandler : MonoBehaviour
                         pulse.enabled = false;
                         pickedAlphabet = other.gameObject;
 
+                        pickedAlphabet.GetComponent<alphabet>().ai.dropDestinations.Add(pickedAlphabet.GetComponent<alphabet>().Holder);
+
+
                         pickedAlphabet.GetComponent<alphabet>().ai.calmMeDown();
-                        pickedAlphabet.GetComponent<alphabet>().ai.currentDrop--;
                         pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
                         pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                         pickedAlphabet.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
@@ -154,7 +155,6 @@ public class pickHandler : MonoBehaviour
 
                     }
                 }
-
             }
 
             else
@@ -177,10 +177,12 @@ public class pickHandler : MonoBehaviour
                             weaponObtained.transform.localScale = new Vector3(5, 5, 5);
                             weaponObtained.tag = "Untagged";
                         }
-
+                        pickedAlphabet.layer = 8;
+                        pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
                         pickedAlphabet.GetComponent<alphabet>().ai = null;
                         pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
-                        pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);                        
+                        pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
+                        pickedAlphabet.transform.tag = "PlayerDrop";
                         hasAlphabet = false;
                         StartCoroutine(wait());
                         StartCoroutine(placementWait(pickedAlphabet));
@@ -199,7 +201,7 @@ public class pickHandler : MonoBehaviour
     {
         if (!Player.isStunned)
         {
-            if (other.tag == "Pickable" || other.tag == "Picked" || other.tag == "EnemyDrop")
+            if (other.tag == "Pickable" || other.tag == "Picked" || other.tag == "EnemyDrop" || other.tag == "PlayerDrop")
             {
                 tempTime = 0;
                 fillImage.transform.parent.gameObject.SetActive(false);
@@ -214,6 +216,7 @@ public class pickHandler : MonoBehaviour
                 fillImage.fillAmount = 1;
             }
         }
+
         if (other.tag == "EnemyDrop")
         {
             tempTime = 0;
@@ -244,14 +247,7 @@ public class pickHandler : MonoBehaviour
         movementHandler.speed = 10;
         pickButton.SetActive(false);
         animHandler.anim.SetBool("Picked", false);
-    }
-
-    private IEnumerator waitRepick(GameObject go)
-    {
-        yield return new WaitForSeconds(1f);
-        go.tag = "Pickable"; 
-    }
-
+    }    
 
     public void dropAlphabet()
     {
@@ -280,5 +276,4 @@ public class pickHandler : MonoBehaviour
             fillImage.transform.parent.gameObject.SetActive(false);
         }
     }
-
 }

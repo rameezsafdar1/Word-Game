@@ -9,6 +9,7 @@ public class AIMover : MonoBehaviour, iDamagable
     public Transform Player;
     public int actor;
     private NavMeshAgent Agent;
+    public List<string> word = new List<string>();
     public List<Transform> pickDestinations = new List<Transform>();
     public List<Transform> dropDestinations = new List<Transform>();
     [SerializeField] private Transform currentDestination;
@@ -19,23 +20,31 @@ public class AIMover : MonoBehaviour, iDamagable
     public Image fillImage;
     public GameObject pickedAlphabet;
     public Transform pickpoint;
-    public Color pickColor;    
-    public int currentDrop;
+    public Color pickColor, darkerPickColor;
     private Transform PlacementPos;
     public bool isStunned;
     private Quaternion lastrot;
-    public bool isAggressive;
+    [HideInInspector] public bool isAggressive;
+    public colorLerp pulse;
+    private int currentDrop;
 
     private void Start()
     {
         Agent = GetComponent<NavMeshAgent>();
+        for (int i = 0; i < dropDestinations.Count; i++)
+        {
+            word.Add(dropDestinations[i].GetComponent<alphabetHolder>().Alphabet);
+        }
     }
 
     private void Update()
     {
         anim.SetFloat("Velocity", Agent.velocity.magnitude);
 
-        if (currentDrop < dropDestinations.Count && !isStunned && !isAggressive)
+        checkDestionations();
+
+
+        if (dropDestinations.Count > 0 && !isStunned && !isAggressive)
         {
             if (!hasAlphabet)
             {
@@ -43,16 +52,42 @@ public class AIMover : MonoBehaviour, iDamagable
                 if (!isFollowing)
                 {
                     int x = Random.Range(0, pickDestinations.Count);
-                    if (!pickDestinations[x].GetComponent<alphabet>().picked && !pickDestinations[x].GetComponent<alphabet>().placed && pickDestinations[x] != currentDestination)
+
+                    for (int h = 0; h < word.Count; h++)
                     {
-                        Agent.isStopped = false;
-                        isFollowing = true;
-                        currentDestination = pickDestinations[x];
-                        Agent.SetDestination(currentDestination.position);
+                        if (pickDestinations[x].GetComponent<alphabet>().letter == word[h])
+                        {
+                            for (int i = 0; i < dropDestinations.Count; i++)
+                            {
+                                if (pickDestinations[x].GetComponent<alphabet>().letter == dropDestinations[i].GetComponent<alphabetHolder>().Alphabet)
+                                {
+                                    if (!pickDestinations[x].GetComponent<alphabet>().picked && pickDestinations[x] != currentDestination)
+                                    {
+                                        currentDrop = i;
+                                        Agent.isStopped = false;
+                                        isFollowing = true;
+                                        currentDestination = pickDestinations[x];
+                                        Agent.SetDestination(currentDestination.position);
+                                        word.RemoveAt(h);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+
                 else
                 {
+                    alphabet a = currentDestination.GetComponent<alphabet>();
+                    if (a != null && a.picked)
+                    {
+                        isFollowing = false;
+                        currentDestination = null;
+                        return;
+                    }
+
+
                     if (currentDestination != null && currentDestination.GetComponent<alphabet>() != null)
                     {
                         if (currentDestination.GetComponent<alphabet>().picked && currentDestination.GetComponent<alphabet>().placed)
@@ -107,7 +142,8 @@ public class AIMover : MonoBehaviour, iDamagable
                 pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(-90, -180, 0);
                 pickedAlphabet.GetComponent<curveFollower>().targetNull();
                 pickedAlphabet.GetComponent<curveFollower>().enabled = true;
-            }
+            }            
+
         }
     }
 
@@ -150,6 +186,46 @@ public class AIMover : MonoBehaviour, iDamagable
                             fillImage.fillAmount = 0;
                         }
                     }
+
+                    if (other.tag == "PlayerDrop" || other.tag == "EnemyDrop")
+                    {
+                        if (!other.GetComponent<curveFollower>().enabled)
+                        {
+                            other.GetComponent<curveFollower>().enabled = true;
+                        }
+
+                        tempTime += Time.deltaTime;
+                        fillImage.transform.parent.gameObject.SetActive(true);
+                        fillImage.fillAmount = tempTime / 8;
+
+
+                        if (tempTime >= 8)
+                        {
+                            pickedAlphabet = other.gameObject;
+                            pickedAlphabet.layer = 0;
+                            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
+                            pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
+                            other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
+                            other.GetComponent<materialChanger>().changeColor(pickColor);
+                            other.tag = "Picked";
+                            other.transform.localScale = new Vector3(80, 80, 80);
+                            hasAlphabet = true;
+                            isFollowing = false;
+                            other.GetComponent<alphabet>().picked = true;
+                            StartCoroutine(wait());
+                            tempTime = 0;
+                            fillImage.transform.parent.gameObject.SetActive(false);
+                            fillImage.fillAmount = 0;
+                        }
+                    }
+
+                    if (other.tag == "PlayerDrop" && other.transform == currentDestination)
+                    {
+                        pulse.col = pickColor;
+                        pulse.darkcol = darkerPickColor;
+                        pulse.enabled = true;
+                    }
+
                 }
             }
 
@@ -165,8 +241,13 @@ public class AIMover : MonoBehaviour, iDamagable
 
                         if (tempTime <= 0)
                         {
+                            word.Clear();
+                            pulse.mat.color = Color.white;
+                            pulse.enabled = false;
+
                             hasAlphabet = false;
                             pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
+                            pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
 
                             Agent.ResetPath();
                             Agent.isStopped = true;
@@ -181,7 +262,8 @@ public class AIMover : MonoBehaviour, iDamagable
                             tempTime = 0;
                             fillImage.transform.parent.gameObject.SetActive(false);
                             fillImage.fillAmount = 0;
-                            currentDrop++;
+
+                            dropDestinations.RemoveAt(currentDrop);
                             isFollowing = false;
                         }
                     }
@@ -213,7 +295,13 @@ public class AIMover : MonoBehaviour, iDamagable
                 tempTime = 0;
                 fillImage.transform.parent.gameObject.SetActive(false);
                 fillImage.fillAmount = 1;
-            }
+            }            
+        }
+
+        if (other.tag == "Picked")
+        {
+            pulse.mat.color = Color.white;
+            pulse.enabled = false;
         }
     }
 
@@ -329,6 +417,17 @@ public class AIMover : MonoBehaviour, iDamagable
         isFollowing = false;
         yield return new WaitForSeconds(0.2f);
         isFollowing = true;
+    }
+
+    private void checkDestionations()
+    {
+        for (int i = 0; i < dropDestinations.Count; i++)
+        {
+            if (!word.Contains(dropDestinations[i].GetComponent<alphabetHolder>().Alphabet))
+            {
+                word.Add(dropDestinations[i].GetComponent<alphabetHolder>().Alphabet);
+            }
+        }
     }
 
 }

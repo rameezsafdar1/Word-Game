@@ -7254,6 +7254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 904465783}
   actor: 1
+  word: []
   pickDestinations:
   - {fileID: 1981551952}
   - {fileID: 58334074}
@@ -7278,9 +7279,10 @@ MonoBehaviour:
   pickedAlphabet: {fileID: 0}
   pickpoint: {fileID: 217053652}
   pickColor: {r: 0.38431376, g: 0.7843138, b: 0.40000004, a: 1}
-  currentDrop: 0
+  darkerPickColor: {r: 0.21987364, g: 0.5754717, b: 0.2338186, a: 1}
   isStunned: 0
   isAggressive: 0
+  pulse: {fileID: 263789812}
 --- !u!195 &1021934648
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15139,6 +15141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 904465783}
   actor: 2
+  word: []
   pickDestinations:
   - {fileID: 465052399}
   - {fileID: 1182782288}
@@ -15163,9 +15166,10 @@ MonoBehaviour:
   pickedAlphabet: {fileID: 0}
   pickpoint: {fileID: 8755094320578638361}
   pickColor: {r: 1, g: 0.49411768, b: 0.49803925, a: 1}
-  currentDrop: 0
+  darkerPickColor: {r: 0.8018868, g: 0.19290671, b: 0.19762748, a: 1}
   isStunned: 0
   isAggressive: 0
+  pulse: {fileID: 263789812}
 --- !u!195 &8755094320742223907
 NavMeshAgent:
   m_ObjectHideFlags: 0

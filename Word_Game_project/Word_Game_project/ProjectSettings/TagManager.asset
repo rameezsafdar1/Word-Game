@@ -11,6 +11,7 @@ TagManager:
   - Weapon
   - Damager
   - AI
+  - PlayerDrop
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - UI
   - AI
   - Player
-  - 
+  - No Collision
   - 
   - 
   - 

@@ -154,7 +154,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.Word_Game
+    Android: com.ForamStudios.Word_Game
   buildNumber:
     Standalone: 0
     iPhone: 0

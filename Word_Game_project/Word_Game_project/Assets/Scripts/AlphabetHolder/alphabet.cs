@@ -12,6 +12,7 @@ public class alphabet : MonoBehaviour
     [HideInInspector]
     public bool placed;
     public AIMover ai;
+    public Transform Holder;
 
     private void Start()
     {
