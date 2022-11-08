@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class alphabet : MonoBehaviour
 {
+    public int actor;
     public string letter;
     public bool picked;
-    private float tempTime;
+    private float tempTime, tempTime2;
     private Vector3 startPos;
     private Quaternion startrot;
     [HideInInspector]
     public bool placed;
-    public AIMover ai;
     public Transform Holder;
     public Color pickColor;
+    public Collider col;
 
     private void Start()
     {
@@ -23,12 +24,25 @@ public class alphabet : MonoBehaviour
 
     private void Update()
     {
-
         if (picked) 
         {
             placed = false;
             tempTime = 0;
+            tempTime2 = 0;
         }
+
+        if (placed)
+        {
+            tempTime2 += Time.deltaTime;
+
+            if (tempTime2 >= 0.5f)
+            {
+                transform.rotation = Quaternion.Euler(-90, -180, 0);
+            }
+
+        }
+
+
 
         if (!picked && !placed && tag == "Pickable")
         {
@@ -50,6 +64,11 @@ public class alphabet : MonoBehaviour
     {
         transform.position = startPos;
         transform.rotation = startrot;
+    }
+
+    public void finalPlacement()
+    {
+        col.enabled = false;
     }
 
 }

@@ -4898,7 +4898,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1b10334ba5f67c54394705b9c23c3baf, type: 2}
+  - {fileID: 2926557707537190794, guid: 867ecf9c9f5448242a7cb2c171cf553b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9752,7 +9752,6 @@ GameObject:
   - component: {fileID: 3804285962509093551}
   - component: {fileID: -2862696597245615813}
   - component: {fileID: -9187371061252374870}
-  - component: {fileID: 3615038083087555507}
   - component: {fileID: -4837326068850358556}
   m_Layer: 0
   m_Name: L (1)
@@ -9804,7 +9803,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1b10334ba5f67c54394705b9c23c3baf, type: 2}
+  - {fileID: 2926557707537190794, guid: 867ecf9c9f5448242a7cb2c171cf553b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9867,9 +9866,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a69fd2aeee91c40b6c08a55d4239ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actor: 0
   letter: L
   picked: 0
   placed: 0
+  Holder: {fileID: 0}
+  pickColor: {r: 0, g: 0, b: 0, a: 0}
+  col: {fileID: 2138850586585074573}
 --- !u!114 &-2862696597245615813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9945,20 +9948,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3615038083087555507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5860805953630706181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c47118738a79334390165cbaba7c6a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myRenderer: {fileID: 3191496450252089675}
-  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &-4837326068850358556
 MonoBehaviour:
   m_ObjectHideFlags: 0

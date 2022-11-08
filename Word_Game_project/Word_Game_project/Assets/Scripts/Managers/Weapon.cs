@@ -13,7 +13,8 @@ public class Weapon : MonoBehaviour
         {
             if (other.tag == "AI")
             {
-                other.GetComponent<iDamagable>().takeDamage();
+                Vector3 direction = new Vector3(0, 0, transform.position.z * -1);
+                other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
                 Vibration.Vibrate(6);
             }
@@ -22,8 +23,8 @@ public class Weapon : MonoBehaviour
         {
             if (other.tag == "Player")
             {
-                ai.calmMeDown();
-                other.GetComponent<iDamagable>().takeDamage();
+                Vector3 direction = new Vector3(0, 0, transform.position.z * -1);
+                other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
                 Vibration.Vibrate(6);
             }

@@ -32,23 +32,6 @@ public class pickHandler : MonoBehaviour
             fillImage.color = pickColor;
         }
 
-        if (other.tag == "EnemyDrop" && !hasAlphabet)
-        {
-            tempTime = 0;
-            other.GetComponent<curveFollower>().targetNull();
-            other.GetComponent<curveFollower>().enabled = true;
-
-            fillImage.color = other.GetComponent<alphabet>().ai.pickColor;
-
-            if (!Player.isStunned)
-            {
-                pulse.col = pickColor;
-                pulse.darkcol = darkerPickCol;
-                pulse.enabled = true;
-                other.GetComponent<alphabet>().ai.makeMeAggressive();
-            }
-        }
-
         if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
         {
             fillImage.color = pickColor;
@@ -59,7 +42,7 @@ public class pickHandler : MonoBehaviour
             pickedAlphabet.GetComponent<curveFollower>().enabled = true;
         }
 
-        if (other.tag == "Weapon" && weaponObtained == null)
+        if (other.tag == "Weapon" && weaponObtained == null && !hasAlphabet)
         {
             weaponObtained = other.gameObject;
             other.GetComponent<Rigidbody>().isKinematic = true;
@@ -77,7 +60,7 @@ public class pickHandler : MonoBehaviour
         {
             if (!hasAlphabet)
             {
-                if (other.tag == "Pickable")
+                if (other.tag == "Pickable" && other.GetComponent<alphabet>().actor == actor)
                 {
                     if (!other.GetComponent<curveFollower>().enabled)
                     {
@@ -94,7 +77,7 @@ public class pickHandler : MonoBehaviour
                         pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
                         pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                         other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-                        other.GetComponent<materialChanger>().changeColor(pickColor);
+
                         other.tag = "Picked";
                         other.transform.localScale = new Vector3(80, 80, 80);
                         hasAlphabet = true;
@@ -113,48 +96,7 @@ public class pickHandler : MonoBehaviour
                         }
 
                     }
-                }
-
-                else if (other.tag == "EnemyDrop")
-                {
-                    other.GetComponent<curveFollower>().enabled = true;
-                    tempTime += Time.deltaTime;
-                    fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = tempTime / 4;
-                    other.GetComponent<alphabet>().ai.makeMeAggressive();
-                    if (tempTime >= 4)
-                    {
-                        pulse.mat.color = Color.white;
-                        pulse.enabled = false;
-                        pickedAlphabet = other.gameObject;
-
-                        pickedAlphabet.GetComponent<alphabet>().ai.dropDestinations.Add(pickedAlphabet.GetComponent<alphabet>().Holder);
-
-
-                        pickedAlphabet.GetComponent<alphabet>().ai.calmMeDown();
-                        pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
-                        pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
-                        pickedAlphabet.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-                        pickedAlphabet.GetComponent<materialChanger>().changeColor(pickColor);
-                        pickedAlphabet.tag = "Picked";
-                        pickedAlphabet.transform.localScale = new Vector3(80, 80, 80);
-                        hasAlphabet = true;
-                        pickedAlphabet.GetComponent<alphabet>().picked = true;
-                        StartCoroutine(wait());
-                        tempTime = 0;
-                        fillImage.transform.parent.gameObject.SetActive(false);
-                        fillImage.fillAmount = 0;
-
-                        if (weaponObtained != null)
-                        {
-                            weaponObtained.transform.parent = weaponBackParent;
-                            weaponObtained.transform.localRotation = Quaternion.identity;
-                            weaponObtained.transform.localPosition = Vector3.zero;
-                            weaponObtained.transform.localScale = new Vector3(5, 5, 5);
-                        }
-
-                    }
-                }
+                }                
             }
 
             else
@@ -179,8 +121,8 @@ public class pickHandler : MonoBehaviour
                         }
                         pickedAlphabet.layer = 8;
                         pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
-                        pickedAlphabet.GetComponent<alphabet>().ai = null;
                         pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
+                        pickedAlphabet.GetComponent<alphabet>().finalPlacement();
                         pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
                         pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
                         pickedAlphabet.transform.tag = "PlayerDrop";
@@ -217,14 +159,6 @@ public class pickHandler : MonoBehaviour
                 fillImage.fillAmount = 1;
             }
         }
-
-        if (other.tag == "EnemyDrop")
-        {
-            tempTime = 0;
-            other.GetComponent<alphabet>().ai.calmMeDown();
-            pulse.enabled = false;
-            pulse.mat.color = Color.white;
-        }
     }
 
     private IEnumerator wait()
@@ -243,8 +177,7 @@ public class pickHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         go.GetComponent<dropEffect>().dropped();
         CinemachineShake.Instance.ShakeCamera(2, 0.3f);
-        Vibration.Vibrate(8);
-        //StartCoroutine(waitRepick(go));
+        Vibration.Vibrate(15);
         movementHandler.speed = 10;
         pickButton.SetActive(false);
         animHandler.anim.SetBool("Picked", false);
@@ -265,7 +198,7 @@ public class pickHandler : MonoBehaviour
             pickedAlphabet.transform.parent = EffectsManager.Instance.instParent;
             pickedAlphabet.GetComponent<curveFollower>().enabled = true;
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
-            pickedAlphabet.GetComponent<materialChanger>().changeColor(Color.white);
+
             animHandler.anim.SetBool("Picked", false);
             movementHandler.speed = 10;
             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);

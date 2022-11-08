@@ -11,13 +11,28 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
     private Vector3 direction;
     public bool isStunned;
     public pickHandler pick;
+    [SerializeField] private float sweepTime;
+    private Vector3 sweepDir;
+    private visualGraph vg;
 
+    private void Start()
+    {
+        vg = GetComponent<visualGraph>();
+    }
 
     private void Update()
     {
         if (!isStunned)
         {
             movement();
+        }
+        else
+        {
+            if (sweepTime < 1)
+            {
+                sweepTime += Time.deltaTime;
+                controller.Move(sweepDir.normalized * 10 * Time.deltaTime);
+            }
         }
     }
 
@@ -58,9 +73,15 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         controller.Move(direction * speed * Time.deltaTime);
     }
 
-    public void takeDamage()
+    public void takeDamage(Vector3 direction)
     {
+        vg.enabled = true;
+        vg.startMoving();
+        sweepTime = 0;
+        sweepDir = transform.TransformDirection(direction);
+        gameObject.layer = 8;
         isStunned = true;
+        pick.animHandler.anim.SetBool("Picked", false);
         pick.dropAlphabet();
         pick.tempTime = 0;
         pick.pulse.enabled = false;
@@ -68,6 +89,11 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         StartCoroutine(stunMe());        
         pick.fillImage.transform.parent.gameObject.SetActive(false);
 
+        if (pick.weaponObtained != null)
+        {
+            pick.weaponObtained.GetComponent<Resetter>().resetMe();
+            pick.weaponObtained = null;
+        }
     }
 
     private IEnumerator stunMe()
@@ -76,6 +102,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         yield return new WaitForSeconds(5f);
         isStunned = false;
         pick.animHandler.anim.SetBool("Stun", false);
+        gameObject.layer = 7;
     }
 
 }

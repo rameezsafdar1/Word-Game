@@ -9,111 +9,44 @@ public class AIMover : MonoBehaviour, iDamagable
     public Transform Player;
     public int actor;
     private NavMeshAgent Agent;
-    public List<string> word = new List<string>();
     public List<Transform> pickDestinations = new List<Transform>();
     public List<Transform> dropDestinations = new List<Transform>();
     [SerializeField] private Transform currentDestination;
-    [SerializeField] private bool isFollowing;
     public bool hasAlphabet;
     public Animator anim;
-    private float tempTime;
+    [SerializeField] private float tempTime;
     public Image fillImage;
     public GameObject pickedAlphabet;
     public Transform pickpoint;
-    public Color pickColor, darkerPickColor;
+    public Color pickColor;
     private Transform PlacementPos;
     public bool isStunned;
     private Quaternion lastrot;
-    [HideInInspector] public bool isAggressive;
-    public colorLerp pulse;
-    private int currentDrop;
+    private GameObject weaponObtained;
+    public Transform weaponParent, weaponBackParent;
 
     private void Start()
     {
         Agent = GetComponent<NavMeshAgent>();
-        for (int i = 0; i < dropDestinations.Count; i++)
-        {
-            word.Add(dropDestinations[i].GetComponent<alphabetHolder>().Alphabet);
-        }
     }
 
     private void Update()
     {
         anim.SetFloat("Velocity", Agent.velocity.magnitude);
 
-        checkDestionations();
-
-
-        if (dropDestinations.Count > 0 && !isStunned && !isAggressive)
+        if (dropDestinations.Count > 0 && !isStunned)
         {
             if (!hasAlphabet)
             {
                 anim.SetBool("Picked", false);
-                if (!isFollowing)
-                {
-                    int x = Random.Range(0, pickDestinations.Count);
-
-                    for (int h = 0; h < word.Count; h++)
-                    {
-                        if (pickDestinations[x].GetComponent<alphabet>().letter == word[h])
-                        {
-                            for (int i = 0; i < dropDestinations.Count; i++)
-                            {
-                                if (pickDestinations[x].GetComponent<alphabet>().letter == dropDestinations[i].GetComponent<alphabetHolder>().Alphabet)
-                                {
-                                    if (!pickDestinations[x].GetComponent<alphabet>().picked && pickDestinations[x] != currentDestination)
-                                    {
-                                        currentDrop = i;
-                                        Agent.isStopped = false;
-                                        isFollowing = true;
-                                        currentDestination = pickDestinations[x];
-                                        Agent.SetDestination(currentDestination.position);
-                                        word.RemoveAt(h);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                else
-                {
-                    alphabet a = currentDestination.GetComponent<alphabet>();
-                    if (a != null && a.picked)
-                    {
-                        isFollowing = false;
-                        currentDestination = null;
-                        return;
-                    }
-
-
-                    if (currentDestination != null && currentDestination.GetComponent<alphabet>() != null)
-                    {
-                        if (currentDestination.GetComponent<alphabet>().picked && currentDestination.GetComponent<alphabet>().placed)
-                        {
-                            Agent.ResetPath();
-                            Agent.isStopped = true;
-                            Agent.velocity = Vector3.zero;
-                            isFollowing = false;
-                        }
-                    }
-                    else
-                    {
-                        isFollowing = false;
-                    }
-                }
+                currentDestination = pickDestinations[0];
+                Agent.SetDestination(pickDestinations[0].position);
             }
 
             else
             {
-                if (!isFollowing)
-                {
-                    Agent.isStopped = false;
-                    currentDestination = dropDestinations[currentDrop];
-                    Agent.SetDestination(currentDestination.position);
-                    isFollowing = true;
-                }
+                currentDestination = dropDestinations[0];
+                Agent.SetDestination(dropDestinations[0].position);
             }
         }
 
@@ -121,7 +54,6 @@ public class AIMover : MonoBehaviour, iDamagable
         {
             transform.rotation = lastrot;
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -137,12 +69,23 @@ public class AIMover : MonoBehaviour, iDamagable
 
             if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
             {
-                tempTime = 4;
+                tempTime = 0;
                 PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
                 pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(-90, -180, 0);
                 pickedAlphabet.GetComponent<curveFollower>().targetNull();
                 pickedAlphabet.GetComponent<curveFollower>().enabled = true;
-            }            
+            }
+
+            if (other.tag == "Weapon" && weaponObtained == null && !hasAlphabet)
+            {
+                weaponObtained = other.gameObject;
+                other.GetComponent<Rigidbody>().isKinematic = true;
+                other.transform.parent = weaponParent;
+                weaponObtained.transform.localRotation = Quaternion.identity;
+                weaponObtained.transform.localPosition = Vector3.zero;
+                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                weaponObtained.tag = "Untagged";
+            }
 
         }
     }
@@ -170,64 +113,31 @@ public class AIMover : MonoBehaviour, iDamagable
 
                         if (tempTime >= 2)
                         {
+                            hasAlphabet = true;
                             pickedAlphabet = other.gameObject;
                             pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
                             pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
                             other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-                            other.GetComponent<materialChanger>().changeColor(pickColor);
+
                             other.tag = "Picked";
                             other.transform.localScale = new Vector3(80, 80, 80);
-                            hasAlphabet = true;
-                            isFollowing = false;
+                            
                             other.GetComponent<alphabet>().picked = true;
                             StartCoroutine(wait());
                             tempTime = 0;
                             fillImage.transform.parent.gameObject.SetActive(false);
                             fillImage.fillAmount = 0;
+
+                            if (weaponObtained != null)
+                            {
+                                weaponObtained.transform.parent = weaponBackParent;
+                                weaponObtained.transform.localRotation = Quaternion.identity;
+                                weaponObtained.transform.localPosition = Vector3.zero;
+                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                            }
+
                         }
                     }
-
-                    if (other.tag == "PlayerDrop" || other.tag == "EnemyDrop")
-                    {
-                        fillImage.color = other.GetComponent<alphabet>().pickColor;
-
-                        if (!other.GetComponent<curveFollower>().enabled)
-                        {
-                            other.GetComponent<curveFollower>().enabled = true;
-                        }
-
-                        tempTime += Time.deltaTime;
-                        fillImage.transform.parent.gameObject.SetActive(true);
-                        fillImage.fillAmount = tempTime / 4;
-
-
-                        if (tempTime >= 4)
-                        {
-                            pickedAlphabet = other.gameObject;
-                            pickedAlphabet.layer = 0;
-                            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
-                            pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
-                            other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-                            other.GetComponent<materialChanger>().changeColor(pickColor);
-                            other.tag = "Picked";
-                            other.transform.localScale = new Vector3(80, 80, 80);
-                            hasAlphabet = true;
-                            isFollowing = false;
-                            other.GetComponent<alphabet>().picked = true;
-                            StartCoroutine(wait());
-                            tempTime = 0;
-                            fillImage.transform.parent.gameObject.SetActive(false);
-                            fillImage.fillAmount = 0;
-                        }
-                    }
-
-                    if (other.tag == "PlayerDrop" && other.transform == currentDestination)
-                    {
-                        pulse.col = pickColor;
-                        pulse.darkcol = darkerPickColor;
-                        pulse.enabled = true;
-                    }
-
                 }
             }
 
@@ -237,42 +147,46 @@ public class AIMover : MonoBehaviour, iDamagable
                 {
                     if (other.tag == "Holder" && PlacementPos != null && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
                     {
-                        tempTime -= Time.deltaTime;
+                        tempTime += Time.deltaTime;
                         fillImage.transform.parent.gameObject.SetActive(true);
-                        fillImage.fillAmount = tempTime / 4;
+                        fillImage.fillAmount = 1 - (tempTime / 4);
                         fillImage.color = pickColor;
 
-                        if (tempTime <= 0)
+                        if (tempTime >= 4)
                         {
-                            word.Clear();
-
-                            hasAlphabet = false;
+                            dropDestinations.RemoveAt(0);
+                            pickDestinations.RemoveAt(0);
                             pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
-                            pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
-                            pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
-                            Agent.ResetPath();
-                            Agent.isStopped = true;
-                            Agent.velocity = Vector3.zero;
+                            pickedAlphabet.GetComponent<curveFollower>().enabled = true;
 
+                            pickedAlphabet.GetComponent<alphabet>().finalPlacement();
                             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
                             currentDestination = null;
-                            hasAlphabet = false;
+
                             StartCoroutine(wait());
                             StartCoroutine(placementWait(pickedAlphabet));
+
                             pickedAlphabet = null;
                             tempTime = 0;
                             fillImage.transform.parent.gameObject.SetActive(false);
                             fillImage.fillAmount = 0;
+                            currentDestination = null;
+                            Agent.ResetPath();
 
-                            dropDestinations.RemoveAt(currentDrop);
-                            isFollowing = false;
+                            if (weaponObtained != null)
+                            {
+                                weaponObtained.transform.parent = weaponParent;
+                                weaponObtained.transform.localRotation = Quaternion.identity;
+                                weaponObtained.transform.localPosition = Vector3.zero;
+                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                                weaponObtained.tag = "Untagged";
+                            }
+
+                            hasAlphabet = false;
+
                         }
                     }
 
-                    if (pickedAlphabet != null && other.tag == "Holder" && other.GetComponent<alphabetHolder>().Alphabet != pickedAlphabet.GetComponent<alphabet>().letter)
-                    {
-                        dropAlphabet();
-                    }
                 }
             }
         }
@@ -298,12 +212,6 @@ public class AIMover : MonoBehaviour, iDamagable
                 fillImage.fillAmount = 1;
             }            
         }
-
-        if (other.tag == "Picked")
-        {
-            pulse.mat.color = Color.white;
-            pulse.enabled = false;
-        }
     }
 
     private IEnumerator wait()
@@ -319,28 +227,18 @@ public class AIMover : MonoBehaviour, iDamagable
         go.GetComponent<alphabet>().placed = true;
         anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(waitRepick(go));
         Agent.speed = 15;
         anim.SetBool("Picked", false);
     }
-
-    private IEnumerator waitRepick(GameObject go)
-    {
-        yield return new WaitForSeconds(1f);
-        go.tag = "EnemyDrop";
-        go.GetComponent<alphabet>().ai = this;
-    }
-
+    
     public void dropAlphabet()
     {
         if (pickedAlphabet != null)
-        {
-            Debug.Log("had something");
-            isFollowing = false;            
+        {   
             pickedAlphabet.transform.parent = EffectsManager.Instance.instParent;
             pickedAlphabet.GetComponent<curveFollower>().enabled = true;
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
-            pickedAlphabet.GetComponent<materialChanger>().changeColor(Color.white);
+
             anim.SetBool("Picked", false);
             Agent.speed = 15;
             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
@@ -349,6 +247,7 @@ public class AIMover : MonoBehaviour, iDamagable
             pickedAlphabet = null;
             hasAlphabet = false;
             fillImage.transform.parent.gameObject.SetActive(false);
+            tempTime = 0;
         }
     }
 
@@ -358,7 +257,7 @@ public class AIMover : MonoBehaviour, iDamagable
         obj.transform.tag = "Pickable";
     }
 
-    public void takeDamage()
+    public void takeDamage(Vector3 direction)
     {
         if (pickedAlphabet != null)
         {
@@ -371,10 +270,15 @@ public class AIMover : MonoBehaviour, iDamagable
         
         StartCoroutine(stunMe());
 
+        if (weaponObtained != null)
+        {
+            weaponObtained.GetComponent<Resetter>().resetMe();
+            weaponObtained = null;
+        }
+
         Agent.ResetPath();
         Agent.velocity = Vector3.zero;
-        isFollowing = false;
-        Agent.speed = 20;
+        Agent.speed = 15;
         lastrot = Agent.transform.rotation;
         fillImage.transform.parent.gameObject.SetActive(false);
 
@@ -391,44 +295,6 @@ public class AIMover : MonoBehaviour, iDamagable
         anim.applyRootMotion = false;
         Agent.speed = 15;
         gameObject.layer = 6;
-    }
-
-    public void makeMeAggressive()
-    {
-        if (!isStunned)
-        {
-            anim.SetBool("Picked", false);
-            dropAlphabet();
-            isAggressive = true;
-            Agent.SetDestination(Player.position);
-        }
-    }
-
-    public void calmMeDown()
-    {
-        Agent.isStopped = false;
-        isAggressive = false;
-        isFollowing = true;
-        StartCoroutine(waitRetarget());
-    }
-
-    private IEnumerator waitRetarget()
-    {
-        yield return new WaitForSeconds(0.1f);
-        isFollowing = false;
-        yield return new WaitForSeconds(0.2f);
-        isFollowing = true;
-    }
-
-    private void checkDestionations()
-    {
-        for (int i = 0; i < dropDestinations.Count; i++)
-        {
-            if (!word.Contains(dropDestinations[i].GetComponent<alphabetHolder>().Alphabet))
-            {
-                word.Add(dropDestinations[i].GetComponent<alphabetHolder>().Alphabet);
-            }
-        }
     }
 
 }

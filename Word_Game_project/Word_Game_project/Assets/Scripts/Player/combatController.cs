@@ -10,22 +10,26 @@ public class combatController : MonoBehaviour
     public AIMover aiMover;
     public thirdPersonMovement Player;
     public GameObject baseWeapon;
+    private bool hitDone;
 
     private void Update()
     {
         if (playerHandler != null)
         {
-            if (fov.detectedObjects.Count > 0 && !playerHandler.hasAlphabet && !Player.isStunned)
+            if (fov.detectedObjects.Count > 0 && !playerHandler.hasAlphabet && !Player.isStunned && !hitDone)
             {
                 anim.SetTrigger("Attack");
+                Vibration.Vibrate(15);
+                StartCoroutine(waitHitComplete());
             }
         }
 
         if (aiMover != null)
         {
-            if (fov.detectedObjects.Count > 0 && !aiMover.hasAlphabet && aiMover.isAggressive && !aiMover.isStunned)
+            if (fov.detectedObjects.Count > 0 && !aiMover.hasAlphabet && !aiMover.isStunned && !hitDone)
             {
                 anim.SetTrigger("Attack");
+                StartCoroutine(waitHitComplete());
             }
         }
 
@@ -40,4 +44,12 @@ public class combatController : MonoBehaviour
     {
         baseWeapon.SetActive(false);
     }
+
+    private IEnumerator waitHitComplete()
+    {
+        hitDone = true;
+        yield return new WaitForSeconds(0.5f);
+        hitDone = false;
+    }
+
 }

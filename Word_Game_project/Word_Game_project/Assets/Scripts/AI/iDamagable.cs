@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface iDamagable
 {
-    public void takeDamage();
+    public void takeDamage(Vector3 direction);
 }
