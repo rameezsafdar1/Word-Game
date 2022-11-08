@@ -30,8 +30,11 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         {
             if (sweepTime < 1)
             {
+                makeGravity();
                 sweepTime += Time.deltaTime;
                 controller.Move(sweepDir.normalized * 10 * Time.deltaTime);
+                Vector3 dir = new Vector3(0, gravity, 0);
+                controller.Move(dir * speed * Time.deltaTime);
             }
         }
     }

@@ -24,35 +24,50 @@ public class AIMover : MonoBehaviour, iDamagable
     private Quaternion lastrot;
     private GameObject weaponObtained;
     public Transform weaponParent, weaponBackParent;
+    private curveFollower cf;
+    public Transform DownRay;
+    public LayerMask detectionLayer;
 
     private void Start()
     {
         Agent = GetComponent<NavMeshAgent>();
+        cf = GetComponent<curveFollower>();
     }
 
     private void Update()
     {
         anim.SetFloat("Velocity", Agent.velocity.magnitude);
 
-        if (dropDestinations.Count > 0 && !isStunned)
-        {
-            if (!hasAlphabet)
-            {
-                anim.SetBool("Picked", false);
-                currentDestination = pickDestinations[0];
-                Agent.SetDestination(pickDestinations[0].position);
-            }
 
-            else
+        if (!isStunned)
+        {
+            if (dropDestinations.Count > 0)
             {
-                currentDestination = dropDestinations[0];
-                Agent.SetDestination(dropDestinations[0].position);
+                if (!hasAlphabet)
+                {
+                    anim.SetBool("Picked", false);
+                    currentDestination = pickDestinations[0];
+                    Agent.SetDestination(pickDestinations[0].position);
+                }
+
+                else
+                {
+                    currentDestination = dropDestinations[0];
+                    Agent.SetDestination(dropDestinations[0].position);
+                }
             }
         }
 
-        if (isStunned)
+        else
         {
             transform.rotation = lastrot;
+
+            RaycastHit hit;
+
+            if (!Physics.Raycast(DownRay.position, DownRay.forward, out hit, 150, detectionLayer))
+            {
+                transform.position += new Vector3(0, -1, 0) * 20 * Time.deltaTime;
+            }
         }
     }
 
@@ -87,6 +102,10 @@ public class AIMover : MonoBehaviour, iDamagable
                 weaponObtained.tag = "Untagged";
             }
 
+        }
+        if (other.tag == "Finish")
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -264,6 +283,8 @@ public class AIMover : MonoBehaviour, iDamagable
             pickedAlphabet.GetComponent<curveFollower>().visual.localPosition = Vector3.zero;
         }
 
+        
+
         gameObject.layer = 0;
         isStunned = true;
         dropAlphabet();
@@ -279,9 +300,18 @@ public class AIMover : MonoBehaviour, iDamagable
         Agent.ResetPath();
         Agent.velocity = Vector3.zero;
         Agent.speed = 15;
+        Agent.isStopped = true;
+        Agent.enabled = false;
+
+        Vector3 newDir = transform.localPosition + new Vector3(direction.x * 5, 0, direction.z * 5);
+
+        cf.setMyTarget(transform.parent, newDir);
+        cf.enabled = true;
+
         lastrot = Agent.transform.rotation;
         fillImage.transform.parent.gameObject.SetActive(false);
-
+        anim.SetBool("Picked", false);
+        anim.SetBool("Stun", true);
     }
 
     private IEnumerator stunMe()
@@ -290,11 +320,13 @@ public class AIMover : MonoBehaviour, iDamagable
         anim.SetBool("Picked", false);
         anim.SetBool("Stun", true);
         yield return new WaitForSeconds(5f);
+        Agent.enabled = true;
         isStunned = false;
         anim.SetBool("Stun", false);
         anim.applyRootMotion = false;
         Agent.speed = 15;
         gameObject.layer = 6;
+        Agent.isStopped = false;
     }
 
 }

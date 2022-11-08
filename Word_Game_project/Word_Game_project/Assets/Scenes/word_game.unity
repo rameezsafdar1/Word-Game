@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 12448870}
   - component: {fileID: 12448869}
   - component: {fileID: 12448868}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 114166447}
   - component: {fileID: 114166446}
   - component: {fileID: 114166445}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3452,7 +3452,7 @@ GameObject:
   - component: {fileID: 240537052}
   - component: {fileID: 240537051}
   - component: {fileID: 240537050}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3576,7 +3576,7 @@ GameObject:
   m_Component:
   - component: {fileID: 263789810}
   - component: {fileID: 263789812}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3746,7 +3746,7 @@ GameObject:
   - component: {fileID: 305546785}
   - component: {fileID: 305546784}
   - component: {fileID: 305546783}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4709,7 +4709,7 @@ GameObject:
   - component: {fileID: 490066849}
   m_Layer: 0
   m_Name: Dead Zone
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4897,7 +4897,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508902023}
-  m_LocalRotation: {x: 0.3155176, y: -0.000000016327478, z: 0.000000005428916, w: 0.9489198}
+  m_LocalRotation: {x: 0.31551757, y: 0.000000016327474, z: -0.0000000054289147, w: 0.9489198}
   m_LocalPosition: {x: -118.8, y: 113.97814, z: -65.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5077,7 +5077,7 @@ GameObject:
   - component: {fileID: 519360713}
   - component: {fileID: 519360712}
   - component: {fileID: 519360711}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5307,7 +5307,7 @@ GameObject:
   - component: {fileID: 627918537}
   - component: {fileID: 627918536}
   - component: {fileID: 627918535}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5530,7 +5530,7 @@ GameObject:
   - component: {fileID: 677546838}
   - component: {fileID: 677546837}
   - component: {fileID: 677546836}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5743,7 +5743,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 4294967295
   m_RenderingLayerMask: 1
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
@@ -6516,7 +6516,7 @@ GameObject:
   - component: {fileID: 896656729}
   - component: {fileID: 896656728}
   - component: {fileID: 896656727}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6788,7 +6788,7 @@ GameObject:
   - component: {fileID: 956805735}
   - component: {fileID: 956805734}
   - component: {fileID: 956805733}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bridge (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6979,7 +6979,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3155176, y: -0.000000016327478, z: 0.000000005428916, w: 0.9489198}
+  m_LocalRotation: {x: 0.31551757, y: 0.000000016327474, z: -0.0000000054289147, w: 0.9489198}
   m_LocalPosition: {x: -118.8, y: 113.97814, z: -65.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7427,6 +7427,7 @@ Transform:
   - {fileID: 1363981112}
   - {fileID: 217053652}
   - {fileID: 1160777009}
+  - {fileID: 1690206265}
   m_Father: {fileID: 651656923}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -7465,6 +7466,10 @@ MonoBehaviour:
   isStunned: 0
   weaponParent: {fileID: 520300240}
   weaponBackParent: {fileID: 1302011368}
+  DownRay: {fileID: 1690206265}
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!195 &1021934648
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7592,7 +7597,7 @@ MonoBehaviour:
   speed: 0
   timeToReach: 1
   timer: 0
-  visual: {fileID: 0}
+  visual: {fileID: 1455130397}
   onReached:
     m_PersistentCalls:
       m_Calls: []
@@ -7704,7 +7709,7 @@ GameObject:
   - component: {fileID: 1091157406}
   - component: {fileID: 1091157405}
   - component: {fileID: 1091157404}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bridge (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7860,7 +7865,7 @@ GameObject:
   - component: {fileID: 1141949548}
   - component: {fileID: 1141949547}
   - component: {fileID: 1141949546}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7955,7 +7960,7 @@ GameObject:
   - component: {fileID: 1142092098}
   - component: {fileID: 1142092097}
   - component: {fileID: 1142092096}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8050,7 +8055,7 @@ GameObject:
   - component: {fileID: 1157362166}
   - component: {fileID: 1157362165}
   - component: {fileID: 1157362164}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8175,7 +8180,7 @@ GameObject:
   - component: {fileID: 1166574664}
   - component: {fileID: 1166574663}
   - component: {fileID: 1166574662}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8487,6 +8492,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1201406782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1201406783}
+  m_Layer: 6
+  m_Name: Ray Down
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1201406783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201406782}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8755094320742223904}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1219585441
 GameObject:
   m_ObjectHideFlags: 0
@@ -8499,7 +8534,7 @@ GameObject:
   - component: {fileID: 1219585445}
   - component: {fileID: 1219585444}
   - component: {fileID: 1219585443}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8699,7 +8734,7 @@ GameObject:
   - component: {fileID: 1299835752}
   - component: {fileID: 1299835751}
   - component: {fileID: 1299835750}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8824,7 +8859,7 @@ GameObject:
   - component: {fileID: 1317459453}
   - component: {fileID: 1317459452}
   - component: {fileID: 1317459451}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10630,6 +10665,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9f6cb5671fcd5bc409765b10769e4abf, type: 3}
   m_PrefabInstance: {fileID: 1683424872}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1690206264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1690206265}
+  m_Layer: 6
+  m_Name: Ray Down
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1690206265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690206264}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1021934646}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &1691152224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11157,7 +11222,7 @@ GameObject:
   - component: {fileID: 1778532922}
   - component: {fileID: 1778532921}
   - component: {fileID: 1778532920}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11383,7 +11448,7 @@ GameObject:
   - component: {fileID: 1816618386}
   - component: {fileID: 1816618385}
   - component: {fileID: 1816618384}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Building (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11813,7 +11878,7 @@ GameObject:
   - component: {fileID: 1871093080}
   - component: {fileID: 1871093079}
   - component: {fileID: 1871093078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11908,7 +11973,7 @@ GameObject:
   - component: {fileID: 1913661478}
   - component: {fileID: 1913661477}
   - component: {fileID: 1913661476}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12199,7 +12264,7 @@ GameObject:
   - component: {fileID: 1956209082}
   - component: {fileID: 1956209081}
   - component: {fileID: 1956209080}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13050,7 +13115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2107220497}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15620,6 +15685,7 @@ Transform:
   - {fileID: 8755094320050434652}
   - {fileID: 8755094320578638361}
   - {fileID: 440732346}
+  - {fileID: 1201406783}
   m_Father: {fileID: 651656923}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -15682,6 +15748,10 @@ MonoBehaviour:
   isStunned: 0
   weaponParent: {fileID: 1931025906}
   weaponBackParent: {fileID: 1970973732}
+  DownRay: {fileID: 1201406783}
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!195 &8755094320742223907
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15832,7 +15902,7 @@ MonoBehaviour:
   speed: 0
   timeToReach: 1
   timer: 0
-  visual: {fileID: 0}
+  visual: {fileID: 9082333939299850546}
   onReached:
     m_PersistentCalls:
       m_Calls: []
