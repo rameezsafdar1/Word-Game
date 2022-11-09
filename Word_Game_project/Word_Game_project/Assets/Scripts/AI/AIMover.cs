@@ -319,7 +319,7 @@ public class AIMover : MonoBehaviour, iDamagable
         anim.applyRootMotion = true;
         anim.SetBool("Picked", false);
         anim.SetBool("Stun", true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         Agent.enabled = true;
         isStunned = false;
         anim.SetBool("Stun", false);

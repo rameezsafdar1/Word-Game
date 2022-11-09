@@ -20,7 +20,6 @@ public class pickHandler : MonoBehaviour
     private Transform PlacementPos;
     public Transform weaponParent, weaponBackParent;
     public GameObject weaponObtained;
-    public colorLerp pulse;
 
     private void OnTriggerEnter(Collider other)
     {

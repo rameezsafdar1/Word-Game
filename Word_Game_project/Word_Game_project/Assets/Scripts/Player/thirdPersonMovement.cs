@@ -87,8 +87,6 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         pick.animHandler.anim.SetBool("Picked", false);
         pick.dropAlphabet();
         pick.tempTime = 0;
-        pick.pulse.enabled = false;
-        pick.pulse.mat.color = Color.white;
         StartCoroutine(stunMe());        
         pick.fillImage.transform.parent.gameObject.SetActive(false);
 
@@ -102,7 +100,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
     private IEnumerator stunMe()
     {
         pick.animHandler.anim.SetBool("Stun", true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         isStunned = false;
         pick.animHandler.anim.SetBool("Stun", false);
         gameObject.layer = 7;

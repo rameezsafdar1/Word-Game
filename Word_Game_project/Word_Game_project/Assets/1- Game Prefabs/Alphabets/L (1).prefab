@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7496302850374377441}
   - component: {fileID: 6238288031870076336}
   - component: {fileID: 7724684582111486499}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4850,7 +4850,7 @@ GameObject:
   - component: {fileID: 4794532965866201655}
   - component: {fileID: 3191496450252089675}
   - component: {fileID: 2138850586585074573}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4945,7 +4945,7 @@ GameObject:
   - component: {fileID: 5822022964874676370}
   - component: {fileID: 8500816313393397945}
   - component: {fileID: 6608014913944068209}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9753,7 +9753,7 @@ GameObject:
   - component: {fileID: -2862696597245615813}
   - component: {fileID: -9187371061252374870}
   - component: {fileID: -4837326068850358556}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: L (1)
   m_TagString: Pickable
   m_Icon: {fileID: 0}
@@ -9973,7 +9973,7 @@ GameObject:
   - component: {fileID: 5494164862172199768}
   - component: {fileID: 2347024441317446462}
   - component: {fileID: 7090620259658115233}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RespawnExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
