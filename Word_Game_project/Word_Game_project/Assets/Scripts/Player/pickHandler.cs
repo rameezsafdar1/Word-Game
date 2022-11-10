@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class pickHandler : MonoBehaviour
 {
+    [HideInInspector] public LevelManager lManager;
     public thirdPersonMovement Player;
     public int actor;
     [HideInInspector] public float tempTime;
@@ -80,7 +81,7 @@ public class pickHandler : MonoBehaviour
                         other.tag = "Picked";
                         other.transform.localScale = new Vector3(80, 80, 80);
                         hasAlphabet = true;
-                        other.GetComponent<alphabet>().picked = true;
+                        other.GetComponent<alphabet>().LetterPicked();
                         StartCoroutine(wait());
                         tempTime = 0;
                         fillImage.transform.parent.gameObject.SetActive(false);
@@ -109,7 +110,7 @@ public class pickHandler : MonoBehaviour
                     if (tempTime <= 0)
                     {
                         hasAlphabet = false;
-
+                        lManager.playerplacement();
                         if (weaponObtained != null)
                         {
                             weaponObtained.transform.parent = weaponParent;
@@ -170,7 +171,8 @@ public class pickHandler : MonoBehaviour
 
     private IEnumerator placementWait(GameObject go)
     {
-        go.GetComponent<alphabet>().picked = false;
+        go.GetComponent<alphabet>().LetterDropped();
+        go.GetComponent<alphabet>().callFinalDrop();
         go.GetComponent<alphabet>().placed = true;
         animHandler.anim.SetBool("Picked", false);
         yield return new WaitForSeconds(0.5f);
@@ -202,7 +204,7 @@ public class pickHandler : MonoBehaviour
             movementHandler.speed = 10;
             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
             pickedAlphabet.transform.tag = "Pickable";
-            pickedAlphabet.GetComponent<alphabet>().picked = false;
+            pickedAlphabet.GetComponent<alphabet>().LetterDropped();
             pickedAlphabet = null;
             pickButton.SetActive(false);
             hasAlphabet = false;

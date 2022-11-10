@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class thirdPersonMovement : MonoBehaviour, iDamagable
 {
+    public GameManager manager;
     [SerializeField] private CharacterController controller;
     public float speed;
     [SerializeField] private float rotationSpeed;
@@ -22,19 +23,22 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
 
     private void Update()
     {
-        if (!isStunned)
+        if (!manager.gameCompleted)
         {
-            movement();
-        }
-        else
-        {
-            if (sweepTime < 1)
+            if (!isStunned)
             {
-                makeGravity();
-                sweepTime += Time.deltaTime;
-                controller.Move(sweepDir.normalized * 10 * Time.deltaTime);
-                Vector3 dir = new Vector3(0, gravity, 0);
-                controller.Move(dir * speed * Time.deltaTime);
+                movement();
+            }
+            else
+            {
+                if (sweepTime < 1)
+                {
+                    makeGravity();
+                    sweepTime += Time.deltaTime;
+                    controller.Move(sweepDir.normalized * 5 * Time.deltaTime);
+                    Vector3 dir = new Vector3(0, gravity, 0);
+                    controller.Move(dir * speed * Time.deltaTime);
+                }
             }
         }
     }

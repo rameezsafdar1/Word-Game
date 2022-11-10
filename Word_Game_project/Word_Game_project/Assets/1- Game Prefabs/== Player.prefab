@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 110425138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 2.78, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 8666746158614476783}
   m_RootOrder: 5
@@ -251,7 +251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 8.8}
+  m_AnchoredPosition: {x: 0, y: 5.7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2085002394
@@ -284,15 +284,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Player
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 22b30c63f998f6f40ba0e095e2efa791, type: 2}
-  m_sharedMaterial: {fileID: -6630623834673469653, guid: 22b30c63f998f6f40ba0e095e2efa791, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a0b05ad3556fc024fad9e5a9b7e17514, type: 2}
+  m_sharedMaterial: {fileID: -6630623834673469653, guid: a0b05ad3556fc024fad9e5a9b7e17514, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294951200
+  m_fontColor: {r: 0.1254902, g: 0.7568628, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2004,7 +2004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 6.7}
+  m_AnchoredPosition: {x: 0, y: 9}
   m_SizeDelta: {x: 480, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7058226366909903462
@@ -2183,7 +2183,6 @@ MonoBehaviour:
   weaponParent: {fileID: 231107421}
   weaponBackParent: {fileID: 968782707}
   weaponObtained: {fileID: 0}
-  pulse: {fileID: 0}
 --- !u!114 &968408788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2198,7 +2197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionFrequency: 0.1
   viewAngle: 90
-  radius: 6
+  radius: 3
   detectionMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2232,7 +2231,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7058226367933228767}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb52355b5e400cf44b11233fcede588a, type: 3}
   m_Name: 
@@ -2243,25 +2242,42 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 7.713469
+      outSlope: 7.713469
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.023115888
+    - serializedVersion: 3
+      time: 0.20540941
+      value: 5.1592565
+      inSlope: 2.8336465
+      outSlope: 2.8336465
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0623266
+    - serializedVersion: 3
+      time: 0.7386836
+      value: 4.2167544
+      inSlope: -7.407567
+      outSlope: -7.407567
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.15711258
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -2.061905
-      outSlope: -2.061905
+      inSlope: -7.651342
+      outSlope: -7.651342
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.044609785
+      inWeight: 0.037247896
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  speed: 0
   timeToReach: 1
   timer: 0
   visual: {fileID: 7384040821716479948}

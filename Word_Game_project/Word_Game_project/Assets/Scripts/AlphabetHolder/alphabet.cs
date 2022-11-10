@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class alphabet : MonoBehaviour
 {
     public int actor;
     public string letter;
-    public bool picked;
+    private bool picked;
     private float tempTime, tempTime2;
     private Vector3 startPos;
     private Quaternion startrot;
@@ -15,6 +16,11 @@ public class alphabet : MonoBehaviour
     public Transform Holder;
     public Color pickColor;
     public Collider col;
+
+    public UnityEvent onPicked;
+    public UnityEvent onDropped;
+    public UnityEvent onFinalDrop;
+
 
     private void Start()
     {
@@ -69,6 +75,32 @@ public class alphabet : MonoBehaviour
     public void finalPlacement()
     {
         col.enabled = false;
+    }
+
+    public void LetterPicked()
+    {
+        picked = true;
+        if (onPicked != null)
+        {
+            onPicked.Invoke();
+        }
+    }
+
+    public void LetterDropped()
+    {
+        picked = false;
+        if (onDropped != null)
+        {
+            onDropped.Invoke();
+        }
+    }
+
+    public void callFinalDrop()
+    {
+        if (onFinalDrop != null)
+        {
+            onFinalDrop.Invoke();
+        }
     }
 
 }
