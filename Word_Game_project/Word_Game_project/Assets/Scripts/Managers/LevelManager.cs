@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -8,6 +9,14 @@ public class LevelManager : MonoBehaviour
     public int Ai1Placements, Ai2Placements, PlayerPlacements;
     public GameObject[] sprites;
     private int currentSprite;
+    public Image endimage;
+
+    private void Start()
+    {
+        endimage.sprite = sprites[sprites.Length - 1].GetComponent<SpriteRenderer>().sprite;
+        endimage.SetNativeSize();
+    }
+
     public void Aip1()
     {
         Ai1Placements--;
