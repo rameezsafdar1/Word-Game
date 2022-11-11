@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
                 Vector3 direction = other.transform.position - transform.position;
                 other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
-                Vibration.Vibrate(15);
+                Vibration.Vibrate(50);
             }
         }
         else
@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour
                 Vector3 direction = new Vector3(0, 0, transform.position.z * -1);
                 other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
-                Vibration.Vibrate(15);
+                Vibration.Vibrate(50);
             }
         }
     }

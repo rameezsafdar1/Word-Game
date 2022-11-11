@@ -178,7 +178,7 @@ public class pickHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         go.GetComponent<dropEffect>().dropped();
         CinemachineShake.Instance.ShakeCamera(2, 0.3f);
-        Vibration.Vibrate(15);
+        Vibration.Vibrate(50);
         movementHandler.speed = 10;
         pickButton.SetActive(false);
         animHandler.anim.SetBool("Picked", false);
