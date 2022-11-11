@@ -699,7 +699,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     4: CF_FORCE_MOBILE_MODE
-    7: CF_FORCE_MOBILE_MODE
+    7: CF_FORCE_MOBILE_MODE;DREAMTECK_SPLINES
     14: CF_FORCE_MOBILE_MODE
   additionalCompilerArguments: {}
   platformArchitecture: {}
