@@ -9,13 +9,6 @@ public class LevelManager : MonoBehaviour
     public int Ai1Placements, Ai2Placements, PlayerPlacements;
     public GameObject[] sprites;
     private int currentSprite;
-    public Image endimage;
-
-    private void Start()
-    {
-        endimage.sprite = sprites[sprites.Length - 1].GetComponent<SpriteRenderer>().sprite;
-        endimage.SetNativeSize();
-    }
 
     public void Aip1()
     {
@@ -43,18 +36,4 @@ public class LevelManager : MonoBehaviour
             Manager.GameComplete();
         }
     }
-
-    public void uploadSprite()
-    {
-        if (currentSprite < sprites.Length)
-        {
-            for (int i = 0; i < sprites.Length; i++)
-            {
-                sprites[i].SetActive(false);
-            }
-            sprites[currentSprite].SetActive(true);
-            currentSprite++;
-        }
-    }
-
 }

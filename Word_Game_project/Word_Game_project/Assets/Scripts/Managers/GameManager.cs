@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //currentLevel = PlayerPrefs.GetInt("Level");
+        currentLevel = PlayerPrefs.GetInt("Level");
         boundarymat.color = Color.white;
         Levels[currentLevel].SetActive(true);
         Player.lManager = Levels[currentLevel].GetComponent<LevelManager>();
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     {
         followcam.Follow = null;
         followcam.LookAt = null;
-        FailPanel.SetActive(true);
+        StartCoroutine(FailDisplay());
     }
 
     public void GameComplete()
@@ -62,8 +62,14 @@ public class GameManager : MonoBehaviour
     {
         Player.animHandler.anim.SetTrigger("Win");
         confetti.SetActive(true);
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(4f);
         WinPanel.SetActive(true);
+    }
+
+    private IEnumerator FailDisplay()
+    {
+        yield return new WaitForSeconds(2f);
+        FailPanel.SetActive(true);
     }
 
     public void restart()
