@@ -9651,7 +9651,7 @@ GameObject:
   - component: {fileID: 7487227626304921678}
   - component: {fileID: 3084842954434732674}
   - component: {fileID: 9080381263686501944}
-  - component: {fileID: 7229889980379595998}
+  - component: {fileID: 9000778864435966727}
   m_Layer: 10
   m_Name: visual
   m_TagString: Untagged
@@ -9680,7 +9680,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7283639767425068767}
-  m_Mesh: {fileID: 3439379326693979389, guid: f12f7be84e92116409c4d1112bbbaf52, type: 3}
+  m_Mesh: {fileID: -3214572557560747977, guid: 2de48894c8350204e973b12bacf13b7a, type: 3}
 --- !u!23 &9080381263686501944
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9722,7 +9722,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7229889980379595998
+--- !u!64 &9000778864435966727
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9735,7 +9735,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 3439379326693979389, guid: f12f7be84e92116409c4d1112bbbaf52, type: 3}
+  m_Mesh: {fileID: -3214572557560747977, guid: 2de48894c8350204e973b12bacf13b7a, type: 3}
 --- !u!1 &7362275335506165652
 GameObject:
   m_ObjectHideFlags: 0
@@ -9754,7 +9754,7 @@ GameObject:
   - component: {fileID: -6611739361231582838}
   - component: {fileID: 4087562445229330724}
   m_Layer: 10
-  m_Name: K (1)
+  m_Name: M (1)
   m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9923,11 +9923,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: 0
-  letter: K
+  letter: M
   placed: 0
   Holder: {fileID: 0}
   pickColor: {r: 0, g: 0, b: 0, a: 0}
-  col: {fileID: 7229889980379595998}
+  col: {fileID: 9000778864435966727}
   onPicked:
     m_PersistentCalls:
       m_Calls: []

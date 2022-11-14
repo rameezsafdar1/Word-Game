@@ -9923,11 +9923,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: 0
-  letter: K
+  letter: I
   placed: 0
   Holder: {fileID: 0}
   pickColor: {r: 0, g: 0, b: 0, a: 0}
-  col: {fileID: 0}
+  col: {fileID: 2563860654591168977}
   onPicked:
     m_PersistentCalls:
       m_Calls: []

@@ -2136,6 +2136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d21fdecf41f624895475dfb4095d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 0}
   controller: {fileID: 7058226367933228752}
   speed: 10
   rotationSpeed: 8
@@ -2168,6 +2169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab4120647ec1834fa8286c9834b6586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lManager: {fileID: 0}
   Player: {fileID: 7058226367933228753}
   actor: 0
   tempTime: 0

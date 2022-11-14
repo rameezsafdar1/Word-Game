@@ -7,15 +7,22 @@ public class LevelManager : MonoBehaviour
 {
     public GameManager Manager;
     public int Ai1Placements, Ai2Placements, PlayerPlacements;
-    public GameObject[] sprites;
-    private int currentSprite;
+    public GameObject ai1Cam, ai2Cam;
+    public Animator ai1anim, ai2anim;
+    private bool resultsout;
 
     public void Aip1()
     {
         Ai1Placements--;
         if (Ai1Placements <= 0)
         {
-            Manager.GameOver();
+            if (!resultsout)
+            {
+                resultsout = true;
+                ai1Cam.SetActive(true);
+                ai1anim.SetTrigger("Win");
+                StartCoroutine(waitFail());
+            }
         }
     }
 
@@ -24,7 +31,13 @@ public class LevelManager : MonoBehaviour
         Ai2Placements--;
         if (Ai2Placements <= 0)
         {
-            Manager.GameOver();
+            if (!resultsout)
+            {
+                resultsout = true;
+                ai2Cam.SetActive(true);
+                ai2anim.SetTrigger("Win");
+                StartCoroutine(waitFail());
+            }
         }
     }
 
@@ -33,7 +46,15 @@ public class LevelManager : MonoBehaviour
         PlayerPlacements--;
         if (PlayerPlacements <= 0)
         {
+            resultsout = true;
             Manager.GameComplete();
         }
     }
+
+    private IEnumerator waitFail()
+    {
+        yield return new WaitForSeconds(4f);
+        Manager.GameOver();
+    }
+
 }

@@ -170,6 +170,7 @@ public class AIMover : MonoBehaviour, iDamagable
             {
                 if (currentDestination == other.transform)
                 {
+                    PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
                     if (other.tag == "Holder" && PlacementPos != null && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
                     {
                         tempTime += Time.deltaTime;

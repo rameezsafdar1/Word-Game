@@ -51,9 +51,10 @@ public class GameManager : MonoBehaviour
 
         if (currentLevel >= Levels.Length)
         {
-            PlayerPrefs.SetInt("Level", currentLevel);
+            currentLevel = 0;
         }
 
+        PlayerPrefs.SetInt("Level", currentLevel);
         gameCompleted = true;
         StartCoroutine(StartConfetti());
     }
