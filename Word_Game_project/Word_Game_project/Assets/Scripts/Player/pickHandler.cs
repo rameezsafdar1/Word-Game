@@ -101,7 +101,7 @@ public class pickHandler : MonoBehaviour
 
             else
             {
-                if (other.tag == "Holder" && PlacementPos != null)
+                if (other.tag == "Holder" && PlacementPos != null && !other.GetComponent<alphabetHolder>().takenOver)
                 {
                     tempTime -= Time.deltaTime;
                     fillImage.transform.parent.gameObject.SetActive(true);
@@ -109,6 +109,7 @@ public class pickHandler : MonoBehaviour
 
                     if (tempTime <= 0)
                     {
+                        other.GetComponent<alphabetHolder>().takenOver = true;
                         hasAlphabet = false;
                         lManager.playerplacement();
                         if (weaponObtained != null)
@@ -178,11 +179,18 @@ public class pickHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         go.GetComponent<dropEffect>().dropped();
         CinemachineShake.Instance.ShakeCamera(2, 0.3f);
-        Vibration.Vibrate(50);
+        Vibration.Vibrate(200);
+        StartCoroutine(waitVIb());
         movementHandler.speed = 10;
         pickButton.SetActive(false);
         animHandler.anim.SetBool("Picked", false);
     }    
+
+    private IEnumerator waitVIb()
+    {
+        yield return new WaitForSeconds(0.2f);
+        Vibration.Vibrate(200);
+    }
 
     public void dropAlphabet()
     {

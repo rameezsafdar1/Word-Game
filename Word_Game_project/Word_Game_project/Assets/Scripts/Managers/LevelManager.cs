@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -18,9 +19,14 @@ public class LevelManager : MonoBehaviour
         {
             if (!resultsout)
             {
+                Manager.gameCompleted = true;
                 resultsout = true;
                 ai1Cam.SetActive(true);
                 ai1anim.SetTrigger("Win");
+
+                ai1anim.GetComponent<NavMeshAgent>().ResetPath();
+                ai2anim.GetComponent<NavMeshAgent>().ResetPath();
+
                 StartCoroutine(waitFail());
             }
         }
@@ -33,9 +39,15 @@ public class LevelManager : MonoBehaviour
         {
             if (!resultsout)
             {
+                Manager.gameCompleted = true;
                 resultsout = true;
                 ai2Cam.SetActive(true);
                 ai2anim.SetTrigger("Win");
+
+
+                ai1anim.GetComponent<NavMeshAgent>().ResetPath();
+                ai2anim.GetComponent<NavMeshAgent>().ResetPath();
+
                 StartCoroutine(waitFail());
             }
         }

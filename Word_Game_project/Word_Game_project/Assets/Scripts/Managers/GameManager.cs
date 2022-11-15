@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public NavMeshSurface navmesh;
     public bool gameStarted, gameCompleted;
     public GameObject startText;
+    public TextMeshProUGUI levelnumber;
 
     private void Start()
     {
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
         boundarymat.color = Color.white;
         Levels[currentLevel].SetActive(true);
         Player.lManager = Levels[currentLevel].GetComponent<LevelManager>();
+        levelnumber.text = "Level " + (currentLevel + 1).ToString();
         navmesh.BuildNavMesh();
     }
 
@@ -69,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator FailDisplay()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         FailPanel.SetActive(true);
     }
 
@@ -78,4 +81,8 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void rebuildNavigation()
+    {
+        navmesh.BuildNavMesh();
+    }
 }

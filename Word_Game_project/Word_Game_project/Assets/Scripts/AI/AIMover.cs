@@ -171,53 +171,50 @@ public class AIMover : MonoBehaviour, iDamagable
                 if (currentDestination == other.transform)
                 {
                     PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
-                    if (other.tag == "Holder" && PlacementPos != null && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor)
+
+                    tempTime += Time.deltaTime;
+                    fillImage.transform.parent.gameObject.SetActive(true);
+                    fillImage.fillAmount = 1 - (tempTime / 4);
+                    fillImage.color = pickColor;
+
+                    if (tempTime >= 4)
                     {
-                        tempTime += Time.deltaTime;
-                        fillImage.transform.parent.gameObject.SetActive(true);
-                        fillImage.fillAmount = 1 - (tempTime / 4);
-                        fillImage.color = pickColor;
+                        dropDestinations.RemoveAt(0);
+                        pickDestinations.RemoveAt(0);
+                        pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
+                        pickedAlphabet.GetComponent<curveFollower>().enabled = true;
 
-                        if (tempTime >= 4)
+                        pickedAlphabet.GetComponent<alphabet>().finalPlacement();
+                        pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
+                        currentDestination = null;
+
+                        StartCoroutine(wait());
+                        StartCoroutine(placementWait(pickedAlphabet));
+
+                        pickedAlphabet = null;
+                        tempTime = 0;
+                        fillImage.transform.parent.gameObject.SetActive(false);
+                        fillImage.fillAmount = 0;
+                        currentDestination = null;
+                        Agent.ResetPath();
+
+                        if (onPlacement != null)
                         {
-                            dropDestinations.RemoveAt(0);
-                            pickDestinations.RemoveAt(0);
-                            pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
-                            pickedAlphabet.GetComponent<curveFollower>().enabled = true;
-
-                            pickedAlphabet.GetComponent<alphabet>().finalPlacement();
-                            pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
-                            currentDestination = null;
-
-                            StartCoroutine(wait());
-                            StartCoroutine(placementWait(pickedAlphabet));
-
-                            pickedAlphabet = null;
-                            tempTime = 0;
-                            fillImage.transform.parent.gameObject.SetActive(false);
-                            fillImage.fillAmount = 0;
-                            currentDestination = null;
-                            Agent.ResetPath();
-
-                            if (onPlacement != null)
-                            {
-                                onPlacement.Invoke();
-                            }
-
-                            if (weaponObtained != null)
-                            {
-                                weaponObtained.transform.parent = weaponParent;
-                                weaponObtained.transform.localRotation = Quaternion.identity;
-                                weaponObtained.transform.localPosition = Vector3.zero;
-                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
-                                weaponObtained.tag = "Untagged";
-                            }
-
-                            hasAlphabet = false;
-
+                            onPlacement.Invoke();
                         }
-                    }
 
+                        if (weaponObtained != null)
+                        {
+                            weaponObtained.transform.parent = weaponParent;
+                            weaponObtained.transform.localRotation = Quaternion.identity;
+                            weaponObtained.transform.localPosition = Vector3.zero;
+                            weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                            weaponObtained.tag = "Untagged";
+                        }
+
+                        hasAlphabet = false;
+
+                    }
                 }
             }
         }
