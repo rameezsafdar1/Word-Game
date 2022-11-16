@@ -24,7 +24,7 @@ public class AIMover : MonoBehaviour, iDamagable
     private Transform PlacementPos;
     public bool isStunned;
     private Quaternion lastrot;
-    private GameObject weaponObtained;
+    public GameObject weaponObtained;
     public Transform weaponParent, weaponBackParent;
     private curveFollower cf;
     public Transform DownRay;
@@ -336,6 +336,14 @@ public class AIMover : MonoBehaviour, iDamagable
         Agent.speed = runSpeed;
         gameObject.layer = 6;
         Agent.isStopped = false;
+    }
+
+    public void hideweapon()
+    {
+        if (weaponObtained != null)
+        {
+            weaponObtained.gameObject.SetActive(false); 
+        }
     }
 
 }

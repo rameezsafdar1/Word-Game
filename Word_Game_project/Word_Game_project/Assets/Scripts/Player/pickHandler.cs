@@ -21,6 +21,20 @@ public class pickHandler : MonoBehaviour
     private Transform PlacementPos;
     public Transform weaponParent, weaponBackParent;
     public GameObject weaponObtained;
+    private float tempVibrate;
+
+    private void Update()
+    {
+        if (Player.controller.velocity.magnitude >= 0.1 && hasAlphabet)
+        {
+            tempVibrate += Time.deltaTime;
+            if (tempVibrate >= 0.2f)
+            {
+                Vibration.Vibrate(100);
+                tempVibrate = 0;
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -81,6 +95,7 @@ public class pickHandler : MonoBehaviour
                         other.tag = "Picked";
                         other.transform.localScale = new Vector3(80, 80, 80);
                         hasAlphabet = true;
+                        Vibration.Vibrate(200);
                         other.GetComponent<alphabet>().LetterPicked();
                         StartCoroutine(wait());
                         tempTime = 0;
@@ -217,6 +232,14 @@ public class pickHandler : MonoBehaviour
             pickButton.SetActive(false);
             hasAlphabet = false;
             fillImage.transform.parent.gameObject.SetActive(false);
+        }
+    }
+
+    public void hideweapon()
+    {
+        if (weaponObtained != null)
+        {
+            weaponObtained.SetActive(false);
         }
     }
 }

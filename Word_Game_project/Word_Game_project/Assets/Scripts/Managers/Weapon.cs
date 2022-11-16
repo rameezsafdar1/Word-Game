@@ -17,7 +17,6 @@ public class Weapon : MonoBehaviour
                 other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
                 Vibration.Vibrate(200);
-                StartCoroutine(wait());
             }
         }
         else
@@ -28,14 +27,7 @@ public class Weapon : MonoBehaviour
                 other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
                 Vibration.Vibrate(200);
-                StartCoroutine(wait());
             }
         }
-    }
-
-    private IEnumerator wait()
-    {
-        yield return new WaitForSeconds(0.2f);
-        Vibration.Vibrate(200);
     }
 }

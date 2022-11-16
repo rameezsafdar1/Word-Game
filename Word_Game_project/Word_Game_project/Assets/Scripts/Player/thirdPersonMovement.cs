@@ -5,7 +5,7 @@ using UnityEngine;
 public class thirdPersonMovement : MonoBehaviour, iDamagable
 {
     public GameManager manager;
-    [SerializeField] private CharacterController controller;
+    public CharacterController controller;
     public float speed;
     [SerializeField] private float rotationSpeed;
     private float gravity = -1f;
@@ -99,6 +99,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
             pick.weaponObtained.GetComponent<Resetter>().resetMe();
             pick.weaponObtained = null;
         }
+        Vibration.Vibrate(200);
     }
 
     private IEnumerator stunMe()

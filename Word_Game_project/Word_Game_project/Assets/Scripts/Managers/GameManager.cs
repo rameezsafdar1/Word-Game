@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     public GameObject startText;
     public TextMeshProUGUI levelnumber;
 
+    [Header("Colors")]
+    public Material buildingsMat;
+    public Camera maincamera;
+    public Color[] colors;
+
     private void Start()
     {
         currentLevel = PlayerPrefs.GetInt("Level");
@@ -27,6 +32,10 @@ public class GameManager : MonoBehaviour
         Player.lManager = Levels[currentLevel].GetComponent<LevelManager>();
         levelnumber.text = "Level " + (currentLevel + 1).ToString();
         navmesh.BuildNavMesh();
+
+        buildingsMat.color = colors[currentLevel];
+        maincamera.backgroundColor = colors[currentLevel];
+
     }
 
     private void Update()
