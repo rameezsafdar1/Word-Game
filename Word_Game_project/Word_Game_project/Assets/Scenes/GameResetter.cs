@@ -12,10 +12,9 @@ public class GameResetter : MonoBehaviour
         if (x < 1)
         {
             PlayerPrefs.DeleteAll();
-            PlayerPrefs.SetInt("Reset", 1);
-            SceneManager.LoadScene(1);
+            PlayerPrefs.SetInt("Reset", 1);            
         }
-
+        SceneManager.LoadScene(1);
     }
 
 }

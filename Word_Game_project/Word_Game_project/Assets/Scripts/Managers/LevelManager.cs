@@ -15,6 +15,9 @@ public class LevelManager : MonoBehaviour
     public Transform winposition, losepos1, losepos2;
     public GameObject Fade, confetti;
     public UnityEvent onComplete;
+    [Space(20)]
+    public GameObject Podium;
+    public Transform win1Pos, win2Pos, playerWinPos;
 
     public void Aip1()
     {
@@ -24,6 +27,8 @@ public class LevelManager : MonoBehaviour
             if (!resultsout)
             {
                 Fade.SetActive(true);
+
+                Podium.transform.position = win1Pos.position;
 
                 if (onComplete != null)
                 {
@@ -78,6 +83,9 @@ public class LevelManager : MonoBehaviour
             if (!resultsout)
             {
                 Fade.SetActive(true);
+
+
+                Podium.transform.position = win2Pos.position;
 
                 if (onComplete != null)
                 {
@@ -134,6 +142,10 @@ public class LevelManager : MonoBehaviour
         if (PlayerPlacements <= 0)
         {
             Fade.SetActive(true);
+
+
+            Podium.transform.position = playerWinPos.position;
+
 
             if (onComplete != null)
             {

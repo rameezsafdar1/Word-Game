@@ -104,6 +104,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
 
     private IEnumerator stunMe()
     {
+        pick.animHandler.anim.SetBool("Picked", false);
         pick.animHandler.anim.SetBool("Stun", true);
         yield return new WaitForSeconds(2f);
         isStunned = false;

@@ -58,6 +58,7 @@ public class alphabet : MonoBehaviour
             {
                 if (transform.position != startPos)
                 {
+                    GetComponent<curveFollower>().visual.transform.localPosition = Vector3.zero;
                     transform.position = startPos;
                     transform.rotation = startrot;
                 }
