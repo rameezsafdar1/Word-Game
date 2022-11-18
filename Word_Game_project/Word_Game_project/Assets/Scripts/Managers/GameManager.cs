@@ -25,12 +25,14 @@ public class GameManager : MonoBehaviour
     public Camera maincamera;
     public Color[] colors;
     public Image hintbg;
+    private LevelManager lmanager;
 
     private void Start()
     {
         currentLevel = PlayerPrefs.GetInt("Level");
         boundarymat.color = Color.white;
         Levels[currentLevel].SetActive(true);
+        lmanager = Levels[currentLevel].GetComponent<LevelManager>();
         Player.lManager = Levels[currentLevel].GetComponent<LevelManager>();
         levelnumber.text = "Level " + (currentLevel + 1).ToString();
         navmesh.BuildNavMesh();
@@ -55,6 +57,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        gameCompleted = true;
+        lmanager.stopAtOnce();
         followcam.Follow = null;
         followcam.LookAt = null;
         StartCoroutine(FailDisplay());

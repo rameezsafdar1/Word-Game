@@ -41,6 +41,10 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
                 }
             }
         }
+        else
+        {
+            makeGravity();
+        }
     }
 
     private void movement()

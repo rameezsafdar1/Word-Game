@@ -239,4 +239,10 @@ public class LevelManager : MonoBehaviour
         Manager.GameOver();
     }
 
+    public void stopAtOnce()
+    {
+        resultsout = true;
+        ai1anim.GetComponent<NavMeshAgent>().ResetPath();
+        ai2anim.GetComponent<NavMeshAgent>().ResetPath();        
+    }
 }
