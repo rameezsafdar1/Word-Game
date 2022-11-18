@@ -15,10 +15,13 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
     [SerializeField] private float sweepTime;
     private Vector3 sweepDir;
     private visualGraph vg;
+    private AudioSource auds;
+    public AudioSource hitaudio;
 
     private void Start()
     {
         vg = GetComponent<visualGraph>();
+        auds = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -53,6 +56,22 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         float vertical = ControlFreak2.CF2Input.GetAxisRaw("Vertical");
 
         direction = new Vector3(horizontal, 0, vertical).normalized;
+
+        if (direction.magnitude >= 0.1f)
+        {
+            if (!auds.isPlaying)
+            {
+                auds.Play();
+            }
+        }
+        else
+        {
+            if (auds.isPlaying)
+            {
+                auds.Pause();
+            }
+        }
+
         controller.Move(direction * speed * Time.deltaTime);
         makeGravity();
         rotation();
@@ -86,6 +105,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
 
     public void takeDamage(Vector3 direction)
     {
+        hitaudio.Play();
         vg.enabled = true;
         vg.startMoving();
         sweepTime = 0;

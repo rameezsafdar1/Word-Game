@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
     public bool player;
     public AIMover ai;
+    public AudioSource hitAudio;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,6 +18,11 @@ public class Weapon : MonoBehaviour
                 other.GetComponent<iDamagable>().takeDamage(direction);
                 gameObject.SetActive(false);
                 Vibration.Vibrate(200);
+
+                if (hitAudio != null)
+                {
+                    hitAudio.Play();
+                }
             }
         }
         else

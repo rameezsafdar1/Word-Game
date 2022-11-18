@@ -9868,11 +9868,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: 0
   letter: P
-  picked: 0
   placed: 0
   Holder: {fileID: 0}
   pickColor: {r: 0, g: 0, b: 0, a: 0}
   col: {fileID: 776853586970713630}
+  onPicked:
+    m_PersistentCalls:
+      m_Calls: []
+  onDropped:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinalDrop:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &-7528997447687123072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14776,7 +14784,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5052682f23f19384da5d743dc76ed64b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d275a3979bbd8064dac2e0f366d37432, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

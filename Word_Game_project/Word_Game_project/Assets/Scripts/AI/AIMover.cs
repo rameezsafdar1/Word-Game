@@ -139,103 +139,106 @@ public class AIMover : MonoBehaviour, iDamagable
 
     private void OnTriggerStay(Collider other)
     {
-        if (!isStunned)
+        if (!Manager.gameCompleted)
         {
-            if (!hasAlphabet)
+            if (!isStunned)
             {
-                if (currentDestination == other.transform)
+                if (!hasAlphabet)
                 {
-                    if (other.tag == "Pickable")
+                    if (currentDestination == other.transform)
                     {
-
-                        if (!other.GetComponent<curveFollower>().enabled)
+                        if (other.tag == "Pickable")
                         {
-                            other.GetComponent<curveFollower>().enabled = true;
-                        }
 
-                        tempTime += Time.deltaTime;
-                        fillImage.transform.parent.gameObject.SetActive(true);
-                        fillImage.fillAmount = tempTime / 2;
-
-
-                        if (tempTime >= 2)
-                        {
-                            hasAlphabet = true;
-                            pickedAlphabet = other.gameObject;
-                            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
-                            pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
-                            other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-
-                            other.tag = "Picked";
-                            other.transform.localScale = new Vector3(80, 80, 80);
-                            
-                            other.GetComponent<alphabet>().LetterPicked();
-                            StartCoroutine(wait());
-                            tempTime = 0;
-                            fillImage.transform.parent.gameObject.SetActive(false);
-                            fillImage.fillAmount = 0;
-
-                            if (weaponObtained != null)
+                            if (!other.GetComponent<curveFollower>().enabled)
                             {
-                                weaponObtained.transform.parent = weaponBackParent;
-                                weaponObtained.transform.localRotation = Quaternion.identity;
-                                weaponObtained.transform.localPosition = Vector3.zero;
-                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                                other.GetComponent<curveFollower>().enabled = true;
                             }
 
+                            tempTime += Time.deltaTime;
+                            fillImage.transform.parent.gameObject.SetActive(true);
+                            fillImage.fillAmount = tempTime / 2;
+
+
+                            if (tempTime >= 2)
+                            {
+                                hasAlphabet = true;
+                                pickedAlphabet = other.gameObject;
+                                pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
+                                pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
+                                other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
+
+                                other.tag = "Picked";
+                                other.transform.localScale = new Vector3(80, 80, 80);
+
+                                other.GetComponent<alphabet>().LetterPicked();
+                                StartCoroutine(wait());
+                                tempTime = 0;
+                                fillImage.transform.parent.gameObject.SetActive(false);
+                                fillImage.fillAmount = 0;
+
+                                if (weaponObtained != null)
+                                {
+                                    weaponObtained.transform.parent = weaponBackParent;
+                                    weaponObtained.transform.localRotation = Quaternion.identity;
+                                    weaponObtained.transform.localPosition = Vector3.zero;
+                                    weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                                }
+
+                            }
                         }
                     }
                 }
-            }
 
-            else
-            {
-                if (currentDestination == other.transform)
+                else
                 {
-                    PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
-
-                    tempTime += Time.deltaTime;
-                    fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = 1 - (tempTime / 4);
-                    fillImage.color = pickColor;
-
-                    if (tempTime >= 4)
+                    if (currentDestination == other.transform)
                     {
-                        dropDestinations.RemoveAt(0);
-                        pickDestinations.RemoveAt(0);
-                        pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
-                        pickedAlphabet.GetComponent<curveFollower>().enabled = true;
+                        PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
 
-                        pickedAlphabet.GetComponent<alphabet>().finalPlacement();
-                        pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
-                        currentDestination = null;
+                        tempTime += Time.deltaTime;
+                        fillImage.transform.parent.gameObject.SetActive(true);
+                        fillImage.fillAmount = 1 - (tempTime / 4);
+                        fillImage.color = pickColor;
 
-                        StartCoroutine(wait());
-                        StartCoroutine(placementWait(pickedAlphabet));
-
-                        pickedAlphabet = null;
-                        tempTime = 0;
-                        fillImage.transform.parent.gameObject.SetActive(false);
-                        fillImage.fillAmount = 0;
-                        currentDestination = null;
-                        Agent.ResetPath();
-
-                        if (onPlacement != null)
+                        if (tempTime >= 4)
                         {
-                            onPlacement.Invoke();
+                            dropDestinations.RemoveAt(0);
+                            pickDestinations.RemoveAt(0);
+                            pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
+                            pickedAlphabet.GetComponent<curveFollower>().enabled = true;
+
+                            pickedAlphabet.GetComponent<alphabet>().finalPlacement();
+                            pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
+                            currentDestination = null;
+
+                            StartCoroutine(wait());
+                            StartCoroutine(placementWait(pickedAlphabet));
+
+                            pickedAlphabet = null;
+                            tempTime = 0;
+                            fillImage.transform.parent.gameObject.SetActive(false);
+                            fillImage.fillAmount = 0;
+                            currentDestination = null;
+                            Agent.ResetPath();
+
+                            if (onPlacement != null)
+                            {
+                                onPlacement.Invoke();
+                            }
+
+                            if (weaponObtained != null)
+                            {
+                                weaponObtained.transform.parent = weaponParent;
+                                weaponObtained.transform.localRotation = Quaternion.identity;
+                                weaponObtained.transform.localPosition = Vector3.zero;
+                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                                weaponObtained.tag = "Untagged";
+                            }
+
+                            hasAlphabet = false;
+
                         }
-
-                        if (weaponObtained != null)
-                        {
-                            weaponObtained.transform.parent = weaponParent;
-                            weaponObtained.transform.localRotation = Quaternion.identity;
-                            weaponObtained.transform.localPosition = Vector3.zero;
-                            weaponObtained.transform.localScale = new Vector3(5, 5, 5);
-                            weaponObtained.tag = "Untagged";
-                        }
-
-                        hasAlphabet = false;
-
                     }
                 }
             }

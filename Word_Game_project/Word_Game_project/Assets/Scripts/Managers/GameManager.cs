@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [Header("Colors")]
     public Material buildingsMat;
     public Camera maincamera;
-    public Color[] colors;
+    public Color[] colors, buildingColors;
     public Image hintbg;
     private LevelManager lmanager;
 
@@ -37,9 +37,16 @@ public class GameManager : MonoBehaviour
         levelnumber.text = "Level " + (currentLevel + 1).ToString();
         navmesh.BuildNavMesh();
 
-        buildingsMat.color = colors[currentLevel];
+        if (currentLevel < buildingColors.Length)
+        {
+            buildingsMat.color = buildingColors[currentLevel];
+        }
+        else
+        {
+            buildingsMat.color = colors[currentLevel];
+        }
         maincamera.backgroundColor = colors[currentLevel];
-        hintbg.color = colors[currentLevel];
+        hintbg.color = buildingColors[currentLevel];
 
     }
 
@@ -83,12 +90,14 @@ public class GameManager : MonoBehaviour
         Player.animHandler.anim.SetTrigger("Win");
         confetti.SetActive(true);
         yield return new WaitForSeconds(4f);
+        FailPanel.SetActive(false);
         WinPanel.SetActive(true);
     }
 
     private IEnumerator FailDisplay()
     {
         yield return new WaitForSeconds(0.5f);
+        WinPanel.SetActive(false);
         FailPanel.SetActive(true);
     }
 

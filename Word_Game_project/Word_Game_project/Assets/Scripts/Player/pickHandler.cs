@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class pickHandler : MonoBehaviour
 {
+    public AudioSource pickaudio;
     [HideInInspector] public LevelManager lManager;
     public thirdPersonMovement Player;
     public int actor;
@@ -74,85 +75,89 @@ public class pickHandler : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!Player.isStunned)
+        if (!Player.manager.gameCompleted)
         {
-            if (!hasAlphabet)
+            if (!Player.isStunned)
             {
-                if (other.tag == "Pickable" && other.GetComponent<alphabet>().actor == actor)
+                if (!hasAlphabet)
                 {
-                    if (!other.GetComponent<curveFollower>().enabled)
+                    if (other.tag == "Pickable" && other.GetComponent<alphabet>().actor == actor)
                     {
-                        other.GetComponent<curveFollower>().enabled = true;
-                    }
-
-                    tempTime += Time.deltaTime;
-                    fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = tempTime / 2;
-
-                    if (tempTime >= 2)
-                    {
-                        pickedAlphabet = other.gameObject;
-                        pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
-                        pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
-                        other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
-
-                        other.tag = "Picked";
-                        other.transform.localScale = new Vector3(80, 80, 80);
-                        hasAlphabet = true;
-                        Vibration.Vibrate(200);
-                        other.GetComponent<alphabet>().LetterPicked();
-                        StartCoroutine(wait());
-                        tempTime = 0;
-                        fillImage.transform.parent.gameObject.SetActive(false);
-                        fillImage.fillAmount = 0;
-
-                        if (weaponObtained != null)
+                        if (!other.GetComponent<curveFollower>().enabled)
                         {
-                            weaponObtained.transform.parent = weaponBackParent;
-                            weaponObtained.transform.localRotation = Quaternion.identity;
-                            weaponObtained.transform.localPosition = Vector3.zero;
-                            weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                            other.GetComponent<curveFollower>().enabled = true;
                         }
 
-                    }
-                }                
-            }
+                        tempTime += Time.deltaTime;
+                        fillImage.transform.parent.gameObject.SetActive(true);
+                        fillImage.fillAmount = tempTime / 2;
 
-            else
-            {
-                if (other.tag == "Holder" && PlacementPos != null && !other.GetComponent<alphabetHolder>().takenOver)
-                {
-                    tempTime -= Time.deltaTime;
-                    fillImage.transform.parent.gameObject.SetActive(true);
-                    fillImage.fillAmount = tempTime / 4;
-
-                    if (tempTime <= 0)
-                    {
-                        other.GetComponent<alphabetHolder>().takenOver = true;
-                        hasAlphabet = false;
-                        if (weaponObtained != null)
+                        if (tempTime >= 2)
                         {
-                            weaponObtained.transform.parent = weaponParent;
-                            weaponObtained.transform.localRotation = Quaternion.identity;
-                            weaponObtained.transform.localPosition = Vector3.zero;
-                            weaponObtained.transform.localScale = new Vector3(5, 5, 5);
-                            weaponObtained.tag = "Untagged";
+                            pickedAlphabet = other.gameObject;
+                            pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
+                            pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
+                            other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
+
+                            other.tag = "Picked";
+                            other.transform.localScale = new Vector3(80, 80, 80);
+                            hasAlphabet = true;
+                            pickaudio.Play();
+                            Vibration.Vibrate(200);
+                            other.GetComponent<alphabet>().LetterPicked();
+                            StartCoroutine(wait());
+                            tempTime = 0;
+                            fillImage.transform.parent.gameObject.SetActive(false);
+                            fillImage.fillAmount = 0;
+
+                            if (weaponObtained != null)
+                            {
+                                weaponObtained.transform.parent = weaponBackParent;
+                                weaponObtained.transform.localRotation = Quaternion.identity;
+                                weaponObtained.transform.localPosition = Vector3.zero;
+                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                            }
+
                         }
-                        pickedAlphabet.layer = 8;
-                        pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
-                        pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
-                        pickedAlphabet.GetComponent<alphabet>().finalPlacement();
-                        pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
-                        pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
-                        pickedAlphabet.transform.tag = "PlayerDrop";
-                        hasAlphabet = false;
-                        StartCoroutine(wait());
-                        StartCoroutine(placementWait(pickedAlphabet));
-                        pickedAlphabet = null;
-                        tempTime = 0;
-                        fillImage.transform.parent.gameObject.SetActive(false);
-                        fillImage.fillAmount = 0;
-                        PlacementPos = null;
+                    }
+                }
+
+                else
+                {
+                    if (other.tag == "Holder" && PlacementPos != null && !other.GetComponent<alphabetHolder>().takenOver)
+                    {
+                        tempTime -= Time.deltaTime;
+                        fillImage.transform.parent.gameObject.SetActive(true);
+                        fillImage.fillAmount = tempTime / 4;
+
+                        if (tempTime <= 0)
+                        {
+                            other.GetComponent<alphabetHolder>().takenOver = true;
+                            hasAlphabet = false;
+                            if (weaponObtained != null)
+                            {
+                                weaponObtained.transform.parent = weaponParent;
+                                weaponObtained.transform.localRotation = Quaternion.identity;
+                                weaponObtained.transform.localPosition = Vector3.zero;
+                                weaponObtained.transform.localScale = new Vector3(5, 5, 5);
+                                weaponObtained.tag = "Untagged";
+                            }
+                            pickedAlphabet.layer = 8;
+                            pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
+                            pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
+                            pickedAlphabet.GetComponent<alphabet>().finalPlacement();
+                            pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
+                            pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
+                            pickedAlphabet.transform.tag = "PlayerDrop";
+                            hasAlphabet = false;
+                            StartCoroutine(wait());
+                            StartCoroutine(placementWait(pickedAlphabet));
+                            pickedAlphabet = null;
+                            tempTime = 0;
+                            fillImage.transform.parent.gameObject.SetActive(false);
+                            fillImage.fillAmount = 0;
+                            PlacementPos = null;
+                        }
                     }
                 }
             }
