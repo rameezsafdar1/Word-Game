@@ -5,6 +5,7 @@ using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
     public Material buildingsMat;
     public Camera maincamera;
     public Color[] colors;
+    public Image hintbg;
 
     private void Start()
     {
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
 
         buildingsMat.color = colors[currentLevel];
         maincamera.backgroundColor = colors[currentLevel];
+        hintbg.color = colors[currentLevel];
 
     }
 

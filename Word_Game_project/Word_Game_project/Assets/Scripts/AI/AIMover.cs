@@ -30,6 +30,8 @@ public class AIMover : MonoBehaviour, iDamagable
     public Transform DownRay;
     public LayerMask detectionLayer;
     public UnityEvent onPlacement;
+    public Transform raypoint;
+    public LayerMask Mask;
 
     private void Start()
     {
@@ -50,15 +52,35 @@ public class AIMover : MonoBehaviour, iDamagable
                 {
                     if (!hasAlphabet)
                     {
-                        anim.SetBool("Picked", false);
-                        currentDestination = pickDestinations[0];
-                        Agent.SetDestination(pickDestinations[0].position);
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(raypoint.position, raypoint.forward, out hit, 5, Mask))
+                        {
+                            Agent.ResetPath();
+                            Agent.velocity = Vector3.zero;
+                        }
+                        else
+                        {
+                            anim.SetBool("Picked", false);
+                            currentDestination = pickDestinations[0];
+                            Agent.SetDestination(pickDestinations[0].position);
+                        }
                     }
 
                     else
                     {
-                        currentDestination = dropDestinations[0];
-                        Agent.SetDestination(dropDestinations[0].position);
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(raypoint.position, raypoint.forward, out hit, 5, Mask))
+                        {
+                            Agent.ResetPath();
+                            Agent.velocity = Vector3.zero;
+                        }
+                        else
+                        {
+                            currentDestination = dropDestinations[0];
+                            Agent.SetDestination(dropDestinations[0].position);
+                        }
                     }
                 }
             }
@@ -245,8 +267,11 @@ public class AIMover : MonoBehaviour, iDamagable
     private IEnumerator wait()
     {
         yield return new WaitForSeconds(0.5f);
-        anim.SetBool("Picked", true);
-        Agent.speed = pushSpeed;
+        if (!isStunned && !Manager.gameCompleted)
+        {
+            anim.SetBool("Picked", true);
+            Agent.speed = pushSpeed;
+        }
     }
 
     private IEnumerator placementWait(GameObject go)
@@ -276,6 +301,9 @@ public class AIMover : MonoBehaviour, iDamagable
             hasAlphabet = false;
             fillImage.transform.parent.gameObject.SetActive(false);
             tempTime = 0;
+
+            anim.SetBool("Picked", false);
+            anim.SetBool("Stun", true);
         }
     }
 
@@ -287,6 +315,7 @@ public class AIMover : MonoBehaviour, iDamagable
 
     public void takeDamage(Vector3 direction)
     {
+        tempTime = 0;
         cf.finalRot = Agent.transform.rotation;
         lastrot = Agent.transform.rotation;
 

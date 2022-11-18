@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using TMPro;
 
 public class LevelManager : MonoBehaviour
 {
@@ -18,6 +19,18 @@ public class LevelManager : MonoBehaviour
     [Space(20)]
     public GameObject Podium;
     public Transform win1Pos, win2Pos, playerWinPos;
+    public TextMeshPro podiumtext;
+    public Color ai1Col, ai2Col, pCol;
+
+    private void Update()
+    {
+        if (resultsout)
+        {
+            ai1anim.gameObject.SetActive(true);
+            ai2anim.gameObject.SetActive(true);
+            Manager.Player.gameObject.SetActive(true);
+        }
+    }
 
     public void Aip1()
     {
@@ -26,25 +39,10 @@ public class LevelManager : MonoBehaviour
         {
             if (!resultsout)
             {
-                Fade.SetActive(true);
-
-                Podium.transform.position = win1Pos.position;
-
-                if (onComplete != null)
-                {
-                    onComplete.Invoke();
-                }
-
+                podiumtext.color = ai1Col;
                 Manager.gameCompleted = true;
                 resultsout = true;
-                ai1anim.SetTrigger("Win");
-                ai1anim.GetComponent<AIMover>().hideweapon();
-                podiumcamera.SetActive(true);
-                ai1anim.GetComponent<NavMeshAgent>().ResetPath();
-                ai2anim.GetComponent<NavMeshAgent>().ResetPath();
-
                 StartCoroutine(ww1());
-
                 StartCoroutine(waitFail());
             }
         }
@@ -52,7 +50,26 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator ww1()
     {
-        yield return new WaitForSeconds(1f);
+        ai1anim.SetTrigger("Win");
+        yield return new WaitForSeconds(2f);
+        Fade.SetActive(true);       
+
+        yield return new WaitForSeconds(1.3f);
+
+        Podium.transform.position = win1Pos.position;
+
+        if (onComplete != null)
+        {
+            onComplete.Invoke();
+        }
+
+        Manager.gameCompleted = true;
+        resultsout = true;
+
+        ai1anim.GetComponent<AIMover>().hideweapon();
+        podiumcamera.SetActive(true);
+        ai1anim.GetComponent<NavMeshAgent>().ResetPath();
+        ai2anim.GetComponent<NavMeshAgent>().ResetPath();
         ai1anim.gameObject.SetActive(true);
         ai1anim.GetComponent<NavMeshAgent>().enabled = false;
         ai1anim.transform.position = winposition.position;
@@ -72,7 +89,16 @@ public class LevelManager : MonoBehaviour
         Manager.Player.animHandler.anim.SetFloat("Velocity", 0);
         Manager.Player.dropAlphabet();
 
-        confetti.SetActive(true);
+        ai1anim.SetBool("Picked", false);
+        ai1anim.SetBool("Stun", false);
+
+        ai2anim.SetBool("Picked", false);
+        ai2anim.SetBool("Stun", false);
+        ai2anim.SetTrigger("Lose");
+
+        Manager.Player.animHandler.anim.SetBool("Picked", false);
+        Manager.Player.animHandler.anim.SetBool("Stun", false);
+        Manager.Player.animHandler.anim.SetTrigger("Lose");
     }
 
     public void Aip2()
@@ -82,27 +108,10 @@ public class LevelManager : MonoBehaviour
         {
             if (!resultsout)
             {
-                Fade.SetActive(true);
-
-
-                Podium.transform.position = win2Pos.position;
-
-                if (onComplete != null)
-                {
-                    onComplete.Invoke();
-                }
-
+                podiumtext.color = ai2Col;
                 Manager.gameCompleted = true;
                 resultsout = true;
-                ai2anim.SetTrigger("Win");
-                ai2anim.GetComponent<AIMover>().hideweapon();
-                podiumcamera.SetActive(true);
-
-                ai1anim.GetComponent<NavMeshAgent>().ResetPath();
-                ai2anim.GetComponent<NavMeshAgent>().ResetPath();
-
                 StartCoroutine(ww2());
-
                 StartCoroutine(waitFail());
             }
         }
@@ -110,7 +119,27 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator ww2()
     {
-        yield return new WaitForSeconds(1f);
+        ai2anim.SetTrigger("Win");
+        yield return new WaitForSeconds(2f);
+        Fade.SetActive(true);        
+
+        yield return new WaitForSeconds(1.3f);
+
+        Podium.transform.position = win2Pos.position;
+
+        if (onComplete != null)
+        {
+            onComplete.Invoke();
+        }
+
+        Manager.gameCompleted = true;
+        resultsout = true;
+        ai2anim.GetComponent<AIMover>().hideweapon();
+        podiumcamera.SetActive(true);
+
+        ai1anim.GetComponent<NavMeshAgent>().ResetPath();
+        ai2anim.GetComponent<NavMeshAgent>().ResetPath();
+
         ai2anim.GetComponent<NavMeshAgent>().enabled = false;
         ai2anim.transform.position = winposition.position;
         ai2anim.transform.rotation = winposition.localRotation;
@@ -126,14 +155,21 @@ public class LevelManager : MonoBehaviour
         ai2anim.gameObject.SetActive(true);
         ai1anim.SetFloat("Velocity", 0);
 
-
-
         Manager.Player.transform.position = losepos1.position;
         Manager.Player.transform.rotation = losepos1.localRotation;
         Manager.Player.animHandler.anim.SetFloat("Velocity", 0);
         Manager.Player.dropAlphabet();
 
-        confetti.SetActive(true);
+        ai1anim.SetBool("Picked", false);
+        ai1anim.SetBool("Stun", false);
+        ai1anim.SetTrigger("Lose");
+
+        ai2anim.SetBool("Picked", false);
+        ai2anim.SetBool("Stun", false);
+
+        Manager.Player.animHandler.anim.SetBool("Picked", false);
+        Manager.Player.animHandler.anim.SetBool("Stun", false);
+        Manager.Player.animHandler.anim.SetTrigger("Lose");
     }
 
     public void playerplacement()
@@ -141,29 +177,30 @@ public class LevelManager : MonoBehaviour
         PlayerPlacements--;
         if (PlayerPlacements <= 0)
         {
-            Fade.SetActive(true);
-
-
-            Podium.transform.position = playerWinPos.position;
-
-
-            if (onComplete != null)
-            {
-                onComplete.Invoke();
-            }
-
+            podiumtext.color = pCol;
+            Manager.gameCompleted = true;
             resultsout = true;
             StartCoroutine(ww3());
-
-            podiumcamera.SetActive(true);
             Manager.GameComplete();
         }
     }
 
     private IEnumerator ww3()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
+        Fade.SetActive(true);       
 
+        yield return new WaitForSeconds(1.3f);
+
+        Podium.transform.position = playerWinPos.position;
+
+        if (onComplete != null)
+        {
+            onComplete.Invoke();
+        }
+
+        resultsout = true;
+        podiumcamera.SetActive(true);
         Manager.Player.transform.position = winposition.position;
         Manager.Player.transform.rotation = winposition.localRotation;
         Manager.Player.animHandler.anim.SetFloat("Velocity", 0);
@@ -183,12 +220,22 @@ public class LevelManager : MonoBehaviour
         ai1anim.SetFloat("Velocity", 0);
         ai1anim.GetComponent<AIMover>().dropAlphabet();
 
+        ai1anim.SetBool("Picked", false);
+        ai1anim.SetBool("Stun", false);
+        ai1anim.SetTrigger("Lose");
+
+        ai2anim.SetBool("Picked", false);
+        ai2anim.SetBool("Stun", false);
+        ai2anim.SetTrigger("Lose");
+
+        Manager.Player.animHandler.anim.SetBool("Picked", false);
+        Manager.Player.animHandler.anim.SetBool("Stun", false);
         confetti.SetActive(true);
     }
 
     private IEnumerator waitFail()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(7f);
         Manager.GameOver();
     }
 

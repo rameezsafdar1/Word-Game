@@ -22,16 +22,20 @@ public class pickHandler : MonoBehaviour
     public Transform weaponParent, weaponBackParent;
     public GameObject weaponObtained;
     private float tempVibrate;
+    private bool dead;
 
     private void Update()
     {
         if (Player.controller.velocity.magnitude >= 0.1 && hasAlphabet)
         {
-            tempVibrate += Time.deltaTime;
-            if (tempVibrate >= 0.2f)
+            if (!dead)
             {
-                Vibration.Vibrate(100);
-                tempVibrate = 0;
+                tempVibrate += Time.deltaTime;
+                if (tempVibrate >= 0.2f)
+                {
+                    Vibration.Vibrate(100);
+                    tempVibrate = 0;
+                }
             }
         }
     }
@@ -126,7 +130,6 @@ public class pickHandler : MonoBehaviour
                     {
                         other.GetComponent<alphabetHolder>().takenOver = true;
                         hasAlphabet = false;
-                        lManager.playerplacement();
                         if (weaponObtained != null)
                         {
                             weaponObtained.transform.parent = weaponParent;
@@ -180,9 +183,14 @@ public class pickHandler : MonoBehaviour
     private IEnumerator wait()
     {
         yield return new WaitForSeconds(0.5f);
-        animHandler.anim.SetBool("Picked", true);
-        movementHandler.speed = 7;
-        pickButton.SetActive(true);
+        if (!Player.manager.gameCompleted)
+        {
+
+
+            animHandler.anim.SetBool("Picked", true);
+            movementHandler.speed = 7;
+            pickButton.SetActive(true);
+        }
     }
 
     private IEnumerator placementWait(GameObject go)
@@ -194,6 +202,7 @@ public class pickHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         go.GetComponent<dropEffect>().dropped();
         CinemachineShake.Instance.ShakeCamera(2, 0.3f);
+        lManager.playerplacement();
         Vibration.Vibrate(200);
         StartCoroutine(waitVIb());
         movementHandler.speed = 10;
@@ -241,5 +250,10 @@ public class pickHandler : MonoBehaviour
         {
             weaponObtained.SetActive(false);
         }
+    }
+
+    public void iamdead()
+    {
+        dead = true;
     }
 }
