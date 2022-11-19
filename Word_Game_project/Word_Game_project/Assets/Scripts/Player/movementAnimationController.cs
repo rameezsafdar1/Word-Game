@@ -5,12 +5,17 @@ using UnityEngine;
 public class movementAnimationController : MonoBehaviour
 {
     public Animator anim;
-    public CharacterController controller;   
-    
+    public CharacterController controller;
+    private thirdPersonMovement main;
+
+    private void Start()
+    {
+        main = GetComponent<thirdPersonMovement>();
+    }
 
     private void Update()
     {
-        anim.SetFloat("Velocity", controller.velocity.magnitude);
+        anim.SetFloat("Velocity", main.direction.magnitude);
     }
 
 }

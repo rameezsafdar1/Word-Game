@@ -9,13 +9,13 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
     public float speed;
     [SerializeField] private float rotationSpeed;
     private float gravity = -1f;
-    private Vector3 direction;
+    [HideInInspector] public Vector3 direction;
     public bool isStunned;
     public pickHandler pick;
     [SerializeField] private float sweepTime;
     private Vector3 sweepDir;
     private visualGraph vg;
-    private AudioSource auds;
+    [HideInInspector] public AudioSource auds;
     public AudioSource hitaudio;
 
     private void Start()
@@ -46,6 +46,8 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         }
         else
         {
+            auds.Stop();
+            direction = Vector3.zero;
             makeGravity();
         }
     }
@@ -99,13 +101,14 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         {
             gravity -= speed * Time.deltaTime;
         }
-        direction = new Vector3(direction.x, gravity, direction.z);
-        controller.Move(direction * speed * Time.deltaTime);
+        Vector3 newdir = new Vector3(direction.x, gravity, direction.z);
+        controller.Move(newdir * speed * Time.deltaTime);
     }
 
     public void takeDamage(Vector3 direction)
     {
         hitaudio.Play();
+        auds.Stop();
         vg.enabled = true;
         vg.startMoving();
         sweepTime = 0;

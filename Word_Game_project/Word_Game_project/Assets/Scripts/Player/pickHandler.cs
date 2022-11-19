@@ -260,5 +260,6 @@ public class pickHandler : MonoBehaviour
     public void iamdead()
     {
         dead = true;
+        Player.auds.Stop();
     }
 }
