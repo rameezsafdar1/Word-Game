@@ -4813,7 +4813,7 @@ GameObject:
   - component: {fileID: 6379796713294761695}
   - component: {fileID: 8253532343060809661}
   - component: {fileID: 5688468917402184224}
-  - component: {fileID: 8702376765687629212}
+  - component: {fileID: 1618913271523215791}
   m_Layer: 10
   m_Name: visual
   m_TagString: Untagged
@@ -4884,8 +4884,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8702376765687629212
-MeshCollider:
+--- !u!65 &1618913271523215791
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4894,10 +4894,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4693480790355496552, guid: 14f77af7848aa254fa880520dd51564c, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.079016864, y: 0.09833091, z: 0.02091985}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8276831432591942324
 GameObject:
   m_ObjectHideFlags: 0
@@ -9871,7 +9870,7 @@ MonoBehaviour:
   placed: 0
   Holder: {fileID: 0}
   pickColor: {r: 0, g: 0, b: 0, a: 0}
-  col: {fileID: 8702376765687629212}
+  col: {fileID: 1618913271523215791}
   onPicked:
     m_PersistentCalls:
       m_Calls: []

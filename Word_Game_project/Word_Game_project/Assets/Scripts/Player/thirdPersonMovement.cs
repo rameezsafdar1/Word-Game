@@ -16,7 +16,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
     private Vector3 sweepDir;
     private visualGraph vg;
     [HideInInspector] public AudioSource auds;
-    public AudioSource hitaudio;
+    public AudioSource hitaudio, hitaudio2;
 
     private void Start()
     {
@@ -101,13 +101,12 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
         {
             gravity -= speed * Time.deltaTime;
         }
-        Vector3 newdir = new Vector3(direction.x, gravity, direction.z);
+        Vector3 newdir = new Vector3(0, gravity, 0);
         controller.Move(newdir * speed * Time.deltaTime);
     }
 
     public void takeDamage(Vector3 direction)
     {
-        hitaudio.Play();
         auds.Stop();
         vg.enabled = true;
         vg.startMoving();
@@ -127,6 +126,16 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
             pick.weaponObtained = null;
         }
         Vibration.Vibrate(200);
+    }
+
+    public void playPunchAudio()
+    {
+        hitaudio.Play();
+    }
+
+    public void playfallaudio()
+    {
+        hitaudio2.Play();
     }
 
     private IEnumerator stunMe()

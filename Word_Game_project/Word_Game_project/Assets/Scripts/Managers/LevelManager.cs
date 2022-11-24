@@ -21,13 +21,18 @@ public class LevelManager : MonoBehaviour
     public Transform win1Pos, win2Pos, playerWinPos;
     public TextMeshPro podiumtext;
     public Color ai1Col, ai2Col, pCol;
+    public AudioSource winaudio, failaudio;
+    public bool falldeath;
 
     private void Update()
     {
         if (resultsout)
         {
-            ai1anim.gameObject.SetActive(true);
-            ai2anim.gameObject.SetActive(true);
+            if (!falldeath)
+            {
+                ai1anim.gameObject.SetActive(true);
+                ai2anim.gameObject.SetActive(true);
+            }
             Manager.Player.gameObject.SetActive(true);
         }
     }
@@ -51,12 +56,13 @@ public class LevelManager : MonoBehaviour
     private IEnumerator ww1()
     {
         ai1anim.SetTrigger("Win");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         Fade.SetActive(true);       
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.3f);
 
         Podium.transform.position = win1Pos.position;
+        Podium.SetActive(true);
 
         if (onComplete != null)
         {
@@ -65,7 +71,7 @@ public class LevelManager : MonoBehaviour
 
         Manager.gameCompleted = true;
         resultsout = true;
-
+        failaudio.Play();
         ai1anim.GetComponent<AIMover>().hideweapon();
         podiumcamera.SetActive(true);
         ai1anim.GetComponent<NavMeshAgent>().ResetPath();
@@ -78,6 +84,7 @@ public class LevelManager : MonoBehaviour
         ai1anim.GetComponent<AIMover>().dropAlphabet();
 
         ai2anim.gameObject.SetActive(true);
+        ai2anim.GetComponent<AIMover>().hideweapon();
         ai2anim.GetComponent<NavMeshAgent>().enabled = false;
         ai2anim.transform.position = losepos1.position;
         ai2anim.transform.rotation = losepos1.localRotation;
@@ -87,6 +94,7 @@ public class LevelManager : MonoBehaviour
         Manager.Player.transform.position = losepos2.position;
         Manager.Player.transform.rotation = losepos2.localRotation;
         Manager.Player.animHandler.anim.SetFloat("Velocity", 0);
+        Manager.Player.hideweapon();
         Manager.Player.dropAlphabet();
 
         ai1anim.SetBool("Picked", false);
@@ -94,6 +102,7 @@ public class LevelManager : MonoBehaviour
 
         ai2anim.SetBool("Picked", false);
         ai2anim.SetBool("Stun", false);
+        ai2anim.SetInteger("State", 1);
         ai2anim.SetTrigger("Lose");
 
         Manager.Player.animHandler.anim.SetBool("Picked", false);
@@ -108,9 +117,9 @@ public class LevelManager : MonoBehaviour
         {
             if (!resultsout)
             {
+                resultsout = true;
                 podiumtext.color = ai2Col;
                 Manager.gameCompleted = true;
-                resultsout = true;
                 StartCoroutine(ww2());
                 StartCoroutine(waitFail());
             }
@@ -120,12 +129,14 @@ public class LevelManager : MonoBehaviour
     private IEnumerator ww2()
     {
         ai2anim.SetTrigger("Win");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         Fade.SetActive(true);        
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.3f);
 
         Podium.transform.position = win2Pos.position;
+        Podium.SetActive(true);
+        failaudio.Play();
 
         if (onComplete != null)
         {
@@ -134,7 +145,6 @@ public class LevelManager : MonoBehaviour
 
         Manager.gameCompleted = true;
         resultsout = true;
-        ai2anim.GetComponent<AIMover>().hideweapon();
         podiumcamera.SetActive(true);
 
         ai1anim.GetComponent<NavMeshAgent>().ResetPath();
@@ -162,6 +172,7 @@ public class LevelManager : MonoBehaviour
 
         ai1anim.SetBool("Picked", false);
         ai1anim.SetBool("Stun", false);
+        ai1anim.SetInteger("State", 1);
         ai1anim.SetTrigger("Lose");
 
         ai2anim.SetBool("Picked", false);
@@ -170,6 +181,11 @@ public class LevelManager : MonoBehaviour
         Manager.Player.animHandler.anim.SetBool("Picked", false);
         Manager.Player.animHandler.anim.SetBool("Stun", false);
         Manager.Player.animHandler.anim.SetTrigger("Lose");
+
+
+        ai2anim.GetComponent<AIMover>().hideweapon();
+        ai1anim.GetComponent<AIMover>().hideweapon();
+        Manager.Player.hideweapon();
     }
 
     public void playerplacement()
@@ -177,9 +193,9 @@ public class LevelManager : MonoBehaviour
         PlayerPlacements--;
         if (PlayerPlacements <= 0)
         {
+            resultsout = true;
             podiumtext.color = pCol;
             Manager.gameCompleted = true;
-            resultsout = true;
             StartCoroutine(ww3());
             Manager.GameComplete();
         }
@@ -187,12 +203,13 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator ww3()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         Fade.SetActive(true);       
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.3f);
 
         Podium.transform.position = playerWinPos.position;
+        Podium.SetActive(true);
 
         if (onComplete != null)
         {
@@ -225,17 +242,24 @@ public class LevelManager : MonoBehaviour
         ai1anim.SetTrigger("Lose");
 
         ai2anim.SetBool("Picked", false);
-        ai2anim.SetBool("Stun", false);
+        ai2anim.SetBool("Stun", false);        
+        ai2anim.SetInteger("State", 1);
         ai2anim.SetTrigger("Lose");
 
         Manager.Player.animHandler.anim.SetBool("Picked", false);
         Manager.Player.animHandler.anim.SetBool("Stun", false);
         confetti.SetActive(true);
+        winaudio.Play();
+
+        ai2anim.GetComponent<AIMover>().hideweapon();
+        ai1anim.GetComponent<AIMover>().hideweapon();
+        Manager.Player.hideweapon();
+
     }
 
     private IEnumerator waitFail()
     {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(3f);
         Manager.GameOver();
     }
 
@@ -243,6 +267,6 @@ public class LevelManager : MonoBehaviour
     {
         resultsout = true;
         ai1anim.GetComponent<NavMeshAgent>().ResetPath();
-        ai2anim.GetComponent<NavMeshAgent>().ResetPath();        
+        ai2anim.GetComponent<NavMeshAgent>().ResetPath();
     }
 }

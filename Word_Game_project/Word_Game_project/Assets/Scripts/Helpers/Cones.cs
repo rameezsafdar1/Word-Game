@@ -10,6 +10,7 @@ public class Cones : MonoBehaviour
         {
             Vector3 direction = other.transform.position - transform.position;
             other.GetComponent<iDamagable>().takeDamage(direction);
+            other.GetComponent<thirdPersonMovement>().playfallaudio();
         }
     }
 }

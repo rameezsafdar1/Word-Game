@@ -19,9 +19,9 @@ public class combatController : MonoBehaviour
             if (fov.detectedObjects.Count > 0 && !playerHandler.hasAlphabet && !Player.isStunned && !hitDone)
             {
                 anim.SetTrigger("Attack");
-                Vibration.Vibrate(200);
+                //Vibration.Vibrate(200);
                 StartCoroutine(waitHitComplete());
-                StartCoroutine(wait());
+                //StartCoroutine(wait());
             }
         }
 
@@ -31,7 +31,7 @@ public class combatController : MonoBehaviour
             {
                 anim.SetTrigger("Attack");
                 StartCoroutine(waitHitComplete());
-                StartCoroutine(wait());
+                //StartCoroutine(wait());
             }
         }
 

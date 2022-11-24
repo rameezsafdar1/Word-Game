@@ -27,7 +27,7 @@ public class pickHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Player.controller.velocity.magnitude >= 0.1 && hasAlphabet)
+        if (Player.direction.magnitude >= 0.1 && hasAlphabet)
         {
             if (!dead)
             {
@@ -97,6 +97,7 @@ public class pickHandler : MonoBehaviour
                             pickedAlphabet = other.gameObject;
                             pickedAlphabet.GetComponent<curveFollower>().finalRot = Quaternion.Euler(0, 0, 0);
                             pickedAlphabet.transform.rotation = pickedAlphabet.GetComponent<curveFollower>().finalRot;
+                            pickedAlphabet.GetComponent<curveFollower>().enabled = true;
                             other.GetComponent<curveFollower>().setMyTarget(pickpoint, pickpoint.localPosition);
 
                             other.tag = "Picked";
@@ -106,7 +107,7 @@ public class pickHandler : MonoBehaviour
                             Vibration.Vibrate(200);
                             other.GetComponent<alphabet>().LetterPicked();
                             StartCoroutine(wait());
-                            tempTime = 0;
+                            tempTime = 4;
                             fillImage.transform.parent.gameObject.SetActive(false);
                             fillImage.fillAmount = 0;
 
@@ -124,7 +125,7 @@ public class pickHandler : MonoBehaviour
 
                 else
                 {
-                    if (other.tag == "Holder" && PlacementPos != null && !other.GetComponent<alphabetHolder>().takenOver)
+                    if (other.tag == "Holder" && hasAlphabet && other.GetComponent<alphabetHolder>().Alphabet == pickedAlphabet.GetComponent<alphabet>().letter && other.GetComponent<alphabetHolder>().actor == actor && !other.GetComponent<alphabetHolder>().takenOver)
                     {
                         tempTime -= Time.deltaTime;
                         fillImage.transform.parent.gameObject.SetActive(true);
@@ -132,6 +133,7 @@ public class pickHandler : MonoBehaviour
 
                         if (tempTime <= 0)
                         {
+                            PlacementPos = other.GetComponent<alphabetHolder>().placementPoint;
                             other.GetComponent<alphabetHolder>().takenOver = true;
                             hasAlphabet = false;
                             if (weaponObtained != null)
@@ -146,10 +148,12 @@ public class pickHandler : MonoBehaviour
                             pickedAlphabet.GetComponent<alphabet>().Holder = other.transform;
                             pickedAlphabet.GetComponent<alphabet>().pickColor = pickColor;
                             pickedAlphabet.GetComponent<alphabet>().finalPlacement();
+                            pickedAlphabet.GetComponent<curveFollower>().enabled = true;
                             pickedAlphabet.GetComponent<curveFollower>().setMyTarget(EffectsManager.Instance.instParent, PlacementPos.position);
                             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
                             pickedAlphabet.transform.tag = "PlayerDrop";
                             hasAlphabet = false;
+                            lManager.playerplacement();
                             StartCoroutine(wait());
                             StartCoroutine(placementWait(pickedAlphabet));
                             pickedAlphabet = null;
@@ -193,7 +197,7 @@ public class pickHandler : MonoBehaviour
 
 
             animHandler.anim.SetBool("Picked", true);
-            movementHandler.speed = 7;
+            movementHandler.speed = 14;
             pickButton.SetActive(true);
         }
     }
@@ -207,10 +211,9 @@ public class pickHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         go.GetComponent<dropEffect>().dropped();
         CinemachineShake.Instance.ShakeCamera(2, 0.3f);
-        lManager.playerplacement();
         Vibration.Vibrate(200);
         StartCoroutine(waitVIb());
-        movementHandler.speed = 10;
+        movementHandler.speed = 20;
         pickButton.SetActive(false);
         animHandler.anim.SetBool("Picked", false);
     }    
@@ -238,7 +241,7 @@ public class pickHandler : MonoBehaviour
             pickedAlphabet.GetComponent<curveFollower>().targetNull();
 
             animHandler.anim.SetBool("Picked", false);
-            movementHandler.speed = 10;
+            movementHandler.speed = 20;
             pickedAlphabet.transform.localScale = new Vector3(55, 55, 55);
             pickedAlphabet.transform.tag = "Pickable";
             pickedAlphabet.GetComponent<alphabet>().LetterDropped();

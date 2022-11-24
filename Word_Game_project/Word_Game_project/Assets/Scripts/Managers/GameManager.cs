@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     public Image hintbg;
     private LevelManager lmanager;
 
+    [Header("Fall Texts")]
+    public GameObject[] falltexts;
+
     private void Start()
     {
         currentLevel = PlayerPrefs.GetInt("Level");
@@ -109,5 +112,21 @@ public class GameManager : MonoBehaviour
     public void rebuildNavigation()
     {
         navmesh.BuildNavMesh();
+    }
+
+    public void randomfalltext()
+    {
+        if (!gameCompleted)
+        {
+            int x = Random.Range(0, falltexts.Length);
+            falltexts[x].SetActive(true);
+        }
+    }
+
+    public void falldeath()
+    {
+        lmanager.falldeath = true;
+        lmanager.ai1anim.gameObject.SetActive(false);
+        lmanager.ai2anim.gameObject.SetActive(false);
     }
 }

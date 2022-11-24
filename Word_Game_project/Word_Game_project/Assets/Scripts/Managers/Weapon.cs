@@ -31,6 +31,7 @@ public class Weapon : MonoBehaviour
             {
                 Vector3 direction = new Vector3(0, 0, transform.position.z * -1);
                 other.GetComponent<iDamagable>().takeDamage(direction);
+                other.GetComponent<thirdPersonMovement>().playPunchAudio();
                 gameObject.SetActive(false);
                 Vibration.Vibrate(200);
             }
