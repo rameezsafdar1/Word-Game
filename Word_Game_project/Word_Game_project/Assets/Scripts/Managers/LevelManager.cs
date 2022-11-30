@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
     public Color ai1Col, ai2Col, pCol;
     public AudioSource winaudio, failaudio;
     public bool falldeath;
+    private bool playerwin;
 
     private void Update()
     {
@@ -34,6 +35,12 @@ public class LevelManager : MonoBehaviour
                 ai2anim.gameObject.SetActive(true);
             }
             Manager.Player.gameObject.SetActive(true);
+
+            if (playerwin)
+            {
+                Manager.Player.transform.position = winposition.position;
+            }
+
         }
     }
 
@@ -59,7 +66,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Fade.SetActive(true);       
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
 
         Podium.transform.position = win1Pos.position;
         Podium.SetActive(true);
@@ -132,7 +139,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Fade.SetActive(true);        
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
 
         Podium.transform.position = win2Pos.position;
         Podium.SetActive(true);
@@ -193,9 +200,9 @@ public class LevelManager : MonoBehaviour
         PlayerPlacements--;
         if (PlayerPlacements <= 0)
         {
+            Manager.gameCompleted = true;
             resultsout = true;
             podiumtext.color = pCol;
-            Manager.gameCompleted = true;
             StartCoroutine(ww3());
             Manager.GameComplete();
         }
@@ -206,8 +213,9 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Fade.SetActive(true);       
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
 
+        playerwin = true;
         Podium.transform.position = playerWinPos.position;
         Podium.SetActive(true);
 

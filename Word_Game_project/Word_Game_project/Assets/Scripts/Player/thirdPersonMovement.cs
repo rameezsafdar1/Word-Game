@@ -102,6 +102,7 @@ public class thirdPersonMovement : MonoBehaviour, iDamagable
             gravity -= speed * Time.deltaTime;
         }
         Vector3 newdir = new Vector3(0, gravity, 0);
+        newdir = transform.TransformDirection(newdir);
         controller.Move(newdir * speed * Time.deltaTime);
     }
 
