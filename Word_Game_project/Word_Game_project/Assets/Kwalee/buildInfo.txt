@@ -1,0 +1,33 @@
+Release Version: Custom
+Publishing System: d2b6d89
+KWAds: [5.1.3] ce1c495
+KWAnalytics: [2.1.3](Custom) 178059c
+KWAttribution: [1.6.0] ea72c13
+KWAudio: [1.0.5] 599b815
+KWCore: [3.8.4](Custom) c65bd6a
+KWCrossPromotion: [1.0.3] b1c4679
+KWDebug: [2.5.1](Custom) d124794
+KWGDPR: [1.3.2] b76e74f
+KWGameCore: [1.3.11] efdee2a
+KWGameSettings: [1.4.0] f4e0ad1
+KWHaptics: [1.1.0] 0fd8f02
+KWLocalisation: [1.2.0] 8f8612e
+KWMarket: [1.2.1] 30c56e5
+KWRating: [1.0.4] c3809d0
+KWServer: [1.2.11] 35d15d2
+KWTools: [2.11.2] d435e50
+KWXPromo: [1.6.1] 4e0b253
+
+Optional Submodules:
+KWIronSource: Not Installed
+KWMax: [5.0.0.2] fe76b13
+
+Gameplay Submodules:
+DialogueSystem: Not Installed
+EarningsQTE: Not Installed
+KWArcadeIdle: Not Installed
+KWCosmeticManager: Not Installed
+KWCurvySpline: Not Installed
+KWObjectCustomisation: Not Installed
+KWProgressReward: Not Installed
+PrizeBox: Not Installed
